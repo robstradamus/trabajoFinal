@@ -1,11 +1,11 @@
 # *Proyecto Final - TUP*
 ---
 
-## Estructura del Proeycto
-/src # Codigo Fuente
-/public # Archivos estaticos
-/package.json # Dependencias y scripts
-/README.md # Documentacion del Proyecto
+## Estructura del Proyecto
+├── src/ # Código fuente de la aplicación
+├── public/ # Archivos estáticos
+├── package.json # Dependencias y scripts del proyecto
+├── README.md # Documentación del proyecto
 
 ---
 
