@@ -3,8 +3,11 @@
 
 ## Estructura del Proyecto
 ├── src/ # Código fuente de la aplicación
+
 ├── public/ # Archivos estáticos
+
 ├── package.json # Dependencias y scripts del proyecto
+
 ├── README.md # Documentación del proyecto
 
 ---
