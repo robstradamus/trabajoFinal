@@ -1,0 +1,48 @@
+{{#if varMensaje}}
+<div class="position-fixed" style="z-index: 9; margin-top: 80px;">
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-{{varEstiloMensaje}} shadow text-center position-fixed top-0 start-50 translate-middle-x" 
+            style="min-width: 300px; max-width: 600px; backdrop-filter: blur(6px); background-color: rgba(255,255,255,0.9); margin-top: 80px;">
+        <ul class="mb-0 list-unstyled">
+            {{#each varMensaje}}
+            <li>{{this.msg}}</li>
+            {{/each}}
+        </ul>
+        </div>
+    </div>
+</div>
+{{/if}}
+<main class="form-signin w-100 m-auto">
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow p-4" style="width: 350px;">
+            <h3 class="text-center mb-4">Registrar Proveedor</h3>
+            <form id='formRegistro' action="/proveedor/registrar" method="POST">
+                <div class="mb-3"> 
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre">
+                </div>
+                <div class="mb-3"> 
+                    <label class="form-label">Tipo de Rubro</label>
+                    <select class="form-select" aria-label="Default select example", name="tipoRubro">
+                        <option selected>Seleccione un Rubro</option>
+                        <option value="Carniceria">Carniceria</option>
+                        <option value="Almacen">Almacen</option>
+                    </select>
+                </div>
+                <div class="mb-3"> 
+                    <label class="form-label">Número Telefono</label>
+                    <input type="text" class="form-control" id="numTel" name="numTel">
+                </div>
+                <div class="mb-3"> 
+                    <label class="form-label">Tipo de Producto</label>
+                    <input type="text" class="form-control" id="tipoProducto" name="tipoProducto">
+                </div>
+                <div class="mb-3"> 
+                    <label class="form-label">Observaciones</label>
+                    <input type="text" class="form-control" id="observaciones" name="observaciones">
+                </div>
+                <button class="btn btn-primary w-100 py-2" type="submit" style="text-align: center;">Registrar</button>
+            </form>
+        </div>
+    </div>
+</main>

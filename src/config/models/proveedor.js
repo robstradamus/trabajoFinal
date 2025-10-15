@@ -15,7 +15,7 @@ const proveedor = db.con_sequelize.define('proveedor', {
         type: Sequelize.STRING(50)
     },
     num_tel: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING(50)
     },
     tipo_producto: {
         type: Sequelize.STRING(50)
