@@ -1,0 +1,65 @@
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Modificar Cliente</h1>
+            <a href="/cliente/listado" class="btn btn-outline-secondary btn-sm"> Volver a Clientes</a>
+        </div>
+
+        {{#if varMensaje}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                {{#each varMensaje}}
+                <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/if}}
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0"> Editar Cliente </h5>
+                    </div>
+                    <div class="card-body"> 
+                        <form id='formModificar' action="/cliente/modificar/{{paramCliente.id_cliente}} <!-- VARIABLE DEL CONTROLADOPRT-->" method="POST">
+                            <div class="mb-3">
+                                <label class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" 
+                                       value="{{paramCliente.nombre}}" required>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">DNI</label>
+                                    <input type="text" class="form-control" id="dni" name="dni" 
+                                           value="{{paramCliente.dni}}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Teléfono</label>
+                                    <input type="text" class="form-control" id="telefono" name="telefono" 
+                                           value="{{paramCliente.telefono}}">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Observaciones</label>
+                                <textarea class="form-control" id="observations" name="observations" 
+                                          rows="3" maxlength="100">{{paramCliente.observations}}</textarea>
+                                <div class="form-text">Máximo 100 caracteres</div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit"> Actualizar Cliente </button>
+                                <a href="/cliente/listado" class="btn btn-outline-secondary">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
