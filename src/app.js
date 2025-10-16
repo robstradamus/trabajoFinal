@@ -22,13 +22,24 @@ app.use(session({
 //Configuracion del passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 app.use(flash());
+app.use((request, response, next) => {
+    response.locals.varEstiloMensaje = request.flash('varEstiloMensaje');
+    response.locals.varMensaje = request.flash('varMensaje');
+    next();
+});
+
 //Configuarcion y creacion de instancia de Handlebars
 app.engine('hbs', engine({
     extname: '.hbs',
     defaultLayout: 'main',
     layoutsDir: path.join(__dirname, 'views/layout'),
-    partialsDir: path.join(__dirname, 'views/partials')
+    partialsDir: path.join(__dirname, 'views/partials'),
+    helpers: {eq: function(a, b) { // Funciones Auxiliares
+        return a === b;
+    }}
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
