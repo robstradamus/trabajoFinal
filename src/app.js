@@ -59,7 +59,7 @@ app.use(express.urlencoded({ extended: true }));
 // ---- RUTAS IMPORTADAS ----
 app.use('/', indexRoutes);
 app.use('/', proveedorRoutes);
-//prueba
+app.use('/', productoRoutes);
 
 
 module.exports = app;
