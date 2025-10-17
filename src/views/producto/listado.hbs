@@ -38,7 +38,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each paramListadoProductos}}
+                            {{#each paramProducto}}
                             <tr>
                                 <td>{{this.id_producto}}</td>
                                 <td>{{this.nombre}}</td>
@@ -54,7 +54,7 @@
                                         {{this.stock}}
                                     </span>
                                 </td>
-                                <td>{{this.proveedor_nombre}}</td>
+                                <td>{{this.rel_proveedor_producto.nombre}}</td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="/producto/modificar/{{this.id_producto}}" class="btn btn-warning" title="Editar">Modificar</a>
