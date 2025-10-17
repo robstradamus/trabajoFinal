@@ -50,8 +50,8 @@
                                     <label class="form-label">Proveedor</label>
                                     <select class="form-select" name="idProveedor" required>
                                         <option value="">Seleccione un proveedor</option>
-                                        {{#each proveedores}}  <!-- LLAMAR CON EL MISMO NOMBRE EN EL CONTROLADOR DE PRODUCTO, desarrollar logica para mostrar los proveedores -->
-                                        <option> <!-- DESARROLLAR LA LOGICA PARA MOSTRAR EL PROVEEDOPR--></option>
+                                        {{#each paramProveedores}}  
+                                        <option value="{{this.id_proveedor}}">{{this.nombre}}</option>
                                         {{/each}}
                                     </select>
                                 </div>

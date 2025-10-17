@@ -6,6 +6,7 @@ const path = require('path');
 const { engine } = require('express-handlebars');
 const passport = require('passport');
 require('dotenv').config();
+require('./config/asociaciones');
 const app = express();
 
 //Importar Rutas AQUI -------------
@@ -60,6 +61,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', indexRoutes);
 app.use('/', proveedorRoutes);
 app.use('/', productoRoutes);
+app
 
 
 module.exports = app;
