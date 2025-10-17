@@ -52,7 +52,7 @@
                                     <select class="form-select" name="idProveedor" required>
                                         <option value="">Seleccione un proveedor</option>
                                         {{#each paramProveedores}}
-                                        <option value="{{this.id_proveedor}}" {{#if (eq this.id_proveedor ../paramProducto.id_producto)}} selected {{/if}}>{{this.nombre}}</option>
+                                        <option value="{{this.id_proveedor}}" {{#if (eq this.id_proveedor ../paramProducto.id_proveedor)}} selected {{/if}}>{{this.nombre}}</option>
                                         {{/each}}
                                     </select>
                                 </div>
@@ -69,8 +69,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Descripción / Observaciones</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" maxlength="100">{{paramProducto.descripcion}}</textarea>
+                                <label class="form-label">Observaciones</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" maxlength="100">{{paramProducto.observacion}}</textarea>
                                 <div class="form-text">Máximo 100 caracteres</div>
                             </div>
 
