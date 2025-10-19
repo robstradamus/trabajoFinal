@@ -1,0 +1,88 @@
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Registrar Producto</h1>
+            <a href="/producto/listado" class="btn btn-outline-secondary btn-sm"> Volver a Productos </a>
+        </div>
+
+        {{#if varMensaje}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                {{#each varMensaje}}
+                <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/if}}
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0"> Nuevo Producto </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id='formRegistro' action="/producto/registrar" method="POST">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nombre del Producto</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Tipo de Producto</label>
+                                    <select class="form-select" name="tipoProducto" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="Almacen">Almacén</option>
+                                        <option value="Carniceria">Carnicería</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Codigo de Barras</label>
+                                    <input type="text" class="form-control" id="codBarra" name="codBarra" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Proveedor</label>
+                                    <select class="form-select" name="idProveedor" required>
+                                        <option value="">Seleccione un proveedor</option>
+                                        {{#each proveedores}}  <!-- LLAMAR CON EL MISMO NOMBRE EN EL CONTROLADOR DE PRODUCTO, desarrollar logica para mostrar los proveedores -->
+                                        <option> <!-- DESARROLLAR LA LOGICA PARA MOSTRAR EL PROVEEDOPR--></option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Precio Unitario</label>
+                                    <input type="number" step="0.01" class="form-control" id="precioUnitario" name="precioUnitario" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Stock Inicial</label>
+                                    <input type="number" class="form-control" id="stock" name="stock" value="0" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Observaciones</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" maxlength="100"></textarea>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">
+                                    Registrar Producto
+                                </button>
+                                <a href="/producto/listado" class="btn btn-outline-secondary">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

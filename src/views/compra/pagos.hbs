@@ -1,0 +1,66 @@
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Pagos</h1>
+            <a href="/compra/lista" class="btn btn-success btn-sm">
+                <i class="bi bi-plus-circle"></i> Volver
+            </a>
+        </div>
+
+        {{#if varMensaje}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                {{#each varMensaje}}
+                <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/if}}
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-truck"></i> Listado de Pagos
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive"> 
+                    {{#if paramListadoPagosProveedores}}
+                    <table id="tablaPagosProveedores" class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Compra</th>
+                                <th>Monto</th>
+                                <th>Fecha</th>
+                                <th>Metodo de Pago</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each paramListadoPagosProveedores}}
+                            <tr>
+                                <td>{{this.nombre_proveedor}} | {{this.fecha_compra}}</td>
+                                <td>${{this.monto}}</td>
+                                <td>{{this.fecha}}</td>
+                                <td>{{this.metodo_pago}}</td>
+                                <td>{{this.observaciones}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    {{else}}
+                    <h1>No hay Pagos Registrados</h1>
+                    {{/if}}
+                    {{#if montoPendiente    }}
+                    <div class="d-grid gap-2">
+                        <a href="/compra/pagos/registrar/{{this.idCompra}}" class="btn btn-primary">Registrar Pago</a>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
