@@ -8,11 +8,13 @@ const passport = require('passport');
 require('dotenv').config();
 require('./config/asociaciones');
 const app = express();
+require('./config/asociaciones');
 
 //Importar Rutas AQUI -------------
 const indexRoutes = require('./routes/index');
 const proveedorRoutes = require('./routes/proveedorRoutes');
 const productoRoutes = require('./routes/productoRoutes');
+const compraRoutes = require('./routes/compraRoutes');
 
 
 //Configuracion de sesiones
@@ -61,7 +63,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', indexRoutes);
 app.use('/', proveedorRoutes);
 app.use('/', productoRoutes);
-app
+app.use('/', compraRoutes);
 
 
 module.exports = app;

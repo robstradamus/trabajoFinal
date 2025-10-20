@@ -1,0 +1,127 @@
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Registrar Compra</h1>
+            <a href="/compra/lista" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> Volver a Compras
+            </a>
+        </div>
+
+        {{#if varMensaje}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                {{#each varMensaje}}
+                <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/if}}
+
+        <div class="row justify-content-center m-4">
+            <div class="col-md-10 col-lg-9">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-person-plus"></i> Nueva Compra
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id='formRegistro' action="/compra/registrar" method="POST">
+                            <div class="mb-3"> 
+                                <label class="form-label">Proveedor</label>
+                                <select class="form-select" arial-label='Proveedor' name="proveedor" id="proveedor">
+                                    {{#each paramProveedor}}
+                                        <option value="{{this.id_proveedor}}">{{this.nombre}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="mb-3"> 
+                                <label class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="fecha" name="fecha" required>
+                            </div>
+
+                            <hr>
+
+                            <!-- Detalles de productos -->
+                            <h5>Productos</h5>
+                            <table class="table" id="tablaProductos">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Precio Unitario</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+                            <button type="button" class="btn btn-secondary" id="agregarProducto">Agregar producto</button>
+
+                            <hr>
+                            <div class="mb-3">
+                                <label>Total:</label>
+                                <input type="number" step="0.01" name="total" id="total" class="form-control" readonly>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="bi bi-check-circle"></i> Registrar Proveedor
+                                </button>
+                                <a href="/proveedor/listado" class="btn btn-outline-secondary">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+  let productos = [];
+
+  document.getElementById("agregarProducto").addEventListener("click", () => {
+    const tbody = document.querySelector("#tablaProductos tbody");
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>
+            <select class="form-select w-200" name="producto[]" id="producto[]">
+                {{#each paramProducto}}
+                    <option value="{{this.id_producto}}">{{this.nombre}}</option>
+                {{/each}}
+            </select>
+        </td>
+        <td><input type="number" name="cantidad[]" class="form-control cantidad" min="1" required></td>
+        <td><input type="number" name="precio_unitario[]" class="form-control precio" step="0.01" required></td>
+        <td><input type="number" step="0.01" name="subtotal[]" class="form-control subtotal" readonly></td>
+        <td><button type="button" class="btn btn-danger btn-sm eliminar">X</button></td>
+    `;
+
+    tbody.appendChild(row);
+
+    row.querySelector(".cantidad").addEventListener("input", actualizarTotales);
+    row.querySelector(".precio").addEventListener("input", actualizarTotales);
+    row.querySelector(".eliminar").addEventListener("click", () => {
+      row.remove();
+      actualizarTotales();
+    });
+  });
+
+  function actualizarTotales() {
+    let total = 0;
+    document.querySelectorAll("#tablaProductos tbody tr").forEach(row => {
+      const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
+      const precio = parseFloat(row.querySelector(".precio").value) || 0;
+      const subtotal = cantidad * precio;
+      row.querySelector(".subtotal").value = subtotal.toFixed(2);
+      total += subtotal;
+    });
+    document.getElementById("total").value = total.toFixed(2);
+  }
+</script>

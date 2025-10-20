@@ -1,0 +1,72 @@
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Registrar Pagos</h1>
+            <a href="/compra/pagos/{{paramDatosCompra.id_compra}}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> Volver a Pagos
+            </a>
+        </div>
+
+        {{#if varMensaje}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                {{#each varMensaje}}
+                <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/if}}
+
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-person-plus"></i> Nuevo Pago
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id='formRegistro' action="/compra/pagos/registrar/{{paramDatosCompra.id_compra}}" method="POST">
+                            <h5>Compra</h5>
+                            <hr>
+                            <div class="mb-3"> 
+                                <h6><span class="badge bg-primary">{{paramDatosCompra.nombre_proveedor}} {{paramDatosCompra.fecha}}</span></h6>
+                                <h6>Monto Pendiente a pagar: <span class="badge bg-danger">${{paramDatosCompra.saldo_pendiente}}</span></h6>
+                            </div>
+                            <hr>
+                            <div class="mb-3"> 
+                                <label class="form-label">Monto</label>
+                                <input type="number" name="monto" class="form-control monto" step="0.01" required>
+                            </div>
+                            <div class="mb-3"> 
+                                <label class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="fecha" name="fecha" required>
+                            </div>
+                            <div class="mb-3"> 
+                                <label class="form-label">Metodo de Pago</label>
+                                <select class="form-select" arial-label='Metodo de Pago' name="metodo_pago" id="metodo_pago">
+                                        <option value="Debito">Debito</option>
+                                        <option value="Efectivo">Efectivo</option>
+                                        <option value="Transferencia">Transferencia</option>
+                                </select>
+                            </div>
+                            <div class="mb-3"> 
+                                <label class="form-label">Observaciones</label>
+                                <textarea class="form-control" id="observaciones" name="observaciones" rows="3"></textarea>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="bi bi-check-circle"></i> Registrar Pago 
+                                </button>
+                                <a href="/compra/pagos/{{paramDatosCompra.id_compra}}" class="btn btn-outline-secondary">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
