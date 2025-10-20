@@ -19,7 +19,7 @@ module.exports.listado = async (request, response) => {
             include:{
                 model: mProveedor,
                 as: 'rel_proveedor_producto',
-                attributes: ['nombre']
+                attributes: ['nombre'] 
             }
         }
     );
