@@ -33,8 +33,8 @@
                             <h5>Compra</h5>
                             <hr>
                             <div class="mb-3"> 
-                                <h6>{{paramDatosCompra.nombre_proveedor}} {{paramDatosCompra.fecha}}</h6>
-                                <h6>Monto Pendiente a pagar: ${{paramDatosCompra.saldo_pendiente}}</h6>
+                                <h6><span class="badge bg-primary">{{paramDatosCompra.nombre_proveedor}} {{paramDatosCompra.fecha}}</span></h6>
+                                <h6>Monto Pendiente a pagar: <span class="badge bg-danger">${{paramDatosCompra.saldo_pendiente}}</span></h6>
                             </div>
                             <hr>
                             <div class="mb-3"> 
@@ -47,7 +47,11 @@
                             </div>
                             <div class="mb-3"> 
                                 <label class="form-label">Metodo de Pago</label>
-                                <input type="text" name="metodo_pago" class="form-control metodo_pago" required>
+                                <select class="form-select" arial-label='Metodo de Pago' name="metodo_pago" id="metodo_pago">
+                                        <option value="Debito">Debito</option>
+                                        <option value="Efectivo">Efectivo</option>
+                                        <option value="Transferencia">Transferencia</option>
+                                </select>
                             </div>
                             <div class="mb-3"> 
                                 <label class="form-label">Observaciones</label>

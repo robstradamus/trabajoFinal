@@ -9,7 +9,7 @@ router.post('/compra/registrar', [
     body('proveedor', 'Debe asignarse a un Proveedor').notEmpty(),
     body('fecha', 'La fecha es obligatoria').notEmpty().isDate(),
     body('producto', 'Debe incluir al menos un producto.').isArray({min: 1}),
-    body('producto.*', 'El nombre del producto no puede estar vacio.').notEmpty().escape(),
+    body('producto.*', 'El debe seleccionar el producto.').notEmpty().escape(),
     body('cantidad', 'Debe incluir cantidad.').isArray({min: 1}),
     body('cantidad.*', 'La cantidad es obligatoria').notEmpty().isInt({min: 1}).escape(),
     body('precio_unitario', 'Debe incluir el precio unitario.').isArray({min: 1}),

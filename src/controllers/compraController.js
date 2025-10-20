@@ -2,14 +2,19 @@ const { validationResult } = require('express-validator');
 const mProveedor = require('../config/models/proveedor');
 const mCompra = require('../config/models/compra');
 const mDetalleCompra = require('../config/models/detalleCompra');
-const mPagoProveedor = require('../config/models/pagoProveedor')
-
+const mPagoProveedor = require('../config/models/pagoProveedor');
+const mProducto = require('../config/models/producto');
+const { where } = require('sequelize');
 
 module.exports.mostrarRegistrar = async (request, response) => {
     let datosProveedor = await mProveedor.findAll({
         raw: true
     });
-    return response.render('compra/registrar', {paramProveedor: datosProveedor});
+
+    let datosProducto = await mProducto.findAll({
+        raw: true
+    });
+    return response.render('compra/registrar', {paramProveedor: datosProveedor, paramProducto: datosProducto});
 }
 
 module.exports.registrar = async (request, response) => {
@@ -27,7 +32,7 @@ module.exports.registrar = async (request, response) => {
         'total': total,
         'saldo_pendiente': total
     });
-    console.log(total);
+    //console.log(total);
 
     if (insertarCompra) {
         const id_compra = insertarCompra.id_compra;
@@ -39,6 +44,19 @@ module.exports.registrar = async (request, response) => {
                 'precio_unitario': precio_unitario[i],
                 'subTotal': subtotal[i]
             });
+
+            const datosProducto = await mProducto.findOne({
+                where: {'id_producto': producto[i]},
+                raw: true
+            });
+
+            let nuevoStock = parseInt(datosProducto.stock) + parseInt(cantidad[i]);
+
+            const actualizarStock = await mProducto.update({
+                "stock": nuevoStock
+            }, {where: {"id_producto": producto[i]}});
+
+            //console.log(actualizarStock);
 
             if (!insertarDetalle) {
                 request.flash('varEstiloMensaje', 'danger');
@@ -70,7 +88,7 @@ module.exports.mostrarListado = async (request, response) => {
         return compra;
     });
 
-    console.log(listadoCompraLimpia);
+    //console.log(listadoCompraLimpia);
     return response.render('compra/lista', {paramListadoCompras: listadoCompraLimpia});
 }
 
@@ -78,10 +96,21 @@ module.exports.mostrarDetalle = async (request, response) => {
     const {id_compra} = request.params;
     let listadoDetalle = await mDetalleCompra.findAll({
         where: {'id_compra': id_compra},
+        include: [
+            {model: mProducto, as: 'Producto', attributes: ['nombre']}
+        ],
         raw: true
     });
-    console.log(listadoDetalle);
-    return response.render('compra/detalle', {paramListadoDetalleCompra: listadoDetalle});
+
+    const listadoDetalleLimpia = listadoDetalle.map(detalles => {
+        detalles.nombre_producto = detalles['Producto.nombre'];
+        delete detalles['Producto.nombre']; 
+        return detalles;
+    });
+
+
+    //console.log(listadoDetalleLimpia);
+    return response.render('compra/detalle', {paramListadoDetalleCompra: listadoDetalleLimpia});
 }
 
 module.exports.mostrarPagos = async (request, response) => {
@@ -117,8 +146,8 @@ module.exports.mostrarPagos = async (request, response) => {
         return pagos;
     });
 
-    console.log(listadoPagosLimpia);
-    console.log(listadoCompra.saldo_pendiente);
+    //console.log(listadoPagosLimpia);
+    //console.log(listadoCompra.saldo_pendiente);
     return response.render('compra/pagos', {paramListadoPagosProveedores: listadoPagosLimpia, idCompra: id_compra, montoPendiente: listadoCompra.saldo_pendiente});
 }
 
@@ -135,7 +164,7 @@ module.exports.registrarPago = async (request, response) => {
     datosCompra.nombre_proveedor = datosCompra['Proveedor.nombre'];
     delete datosCompra['Proveedor.nombre'];
 
-    console.log(datosCompra);
+    //console.log(datosCompra);
     return response.render('compra/registrarPago', {paramDatosCompra: datosCompra});
 }
 

@@ -21,7 +21,7 @@
         {{/if}}
 
         <div class="row justify-content-center m-4">
-            <div class="col-md-6 col-lg-5">
+            <div class="col-md-10 col-lg-9">
                 <div class="card shadow-sm">
                     <div class="card-header bg-dark text-white">
                         <h5 class="card-title mb-0">
@@ -90,11 +90,17 @@
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td><input type="number" name="producto[]" class="form-control" required></td>
-      <td><input type="number" name="cantidad[]" class="form-control cantidad" min="1" required></td>
-      <td><input type="number" name="precio_unitario[]" class="form-control precio" step="0.01" required></td>
-      <td><input type="number" step="0.01" name="subtotal[]" class="form-control subtotal" readonly></td>
-      <td><button type="button" class="btn btn-danger btn-sm eliminar">X</button></td>
+        <td>
+            <select class="form-select w-200" name="producto[]" id="producto[]">
+                {{#each paramProducto}}
+                    <option value="{{this.id_producto}}">{{this.nombre}}</option>
+                {{/each}}
+            </select>
+        </td>
+        <td><input type="number" name="cantidad[]" class="form-control cantidad" min="1" required></td>
+        <td><input type="number" name="precio_unitario[]" class="form-control precio" step="0.01" required></td>
+        <td><input type="number" step="0.01" name="subtotal[]" class="form-control subtotal" readonly></td>
+        <td><button type="button" class="btn btn-danger btn-sm eliminar">X</button></td>
     `;
 
     tbody.appendChild(row);

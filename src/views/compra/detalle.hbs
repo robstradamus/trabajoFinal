@@ -20,7 +20,7 @@
         </div>
         {{/if}}
 
-        <div class="card shadow-sm">
+        <div class="card shadow-sm mb-4">
             <div class="card-header bg-dark text-white">
                 <h5 class="card-title mb-0">
                     <i class="bi bi-truck"></i> Detalle de Compra
@@ -40,7 +40,7 @@
                         <tbody>
                             {{#each paramListadoDetalleCompra}}
                             <tr>
-                                <td>{{this.id_producto}}</td>
+                                <td><span class="badge bg-primary">{{this.nombre_producto}}</span></td>
                                 <td>{{this.cantidad}} unidades</td>
                                 <td>${{this.precio_unitario}}</td>
                                 <td>${{this.subTotal}}</td>
@@ -53,3 +53,28 @@
         </div>
     </main>
 </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-2.0.8/datatables.min.js"></script>
+<script>
+    let tabla;
+    $(document).ready(function() {
+        // Inicializa DataTables en tu tabla con el ID "tablaProveedore"
+        tabla = $('#tablaDetalleCompra').DataTable({
+            // Opciones de idioma para español
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibl    es",
+                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            }
+        });
+    });
+</script>

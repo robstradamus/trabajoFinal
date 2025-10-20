@@ -6,6 +6,7 @@ const path = require('path');
 const { engine } = require('express-handlebars');
 const passport = require('passport');
 require('dotenv').config();
+require('./config/asociaciones');
 const app = express();
 require('./config/asociaciones');
 
