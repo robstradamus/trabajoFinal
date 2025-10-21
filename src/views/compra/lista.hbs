@@ -49,21 +49,6 @@
                         </div>
                     </div>
                 </div>
-                <!--
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label for="minDate" class="form-label">Fecha Mínima:</label>
-                        <input type="date" id="minDate" class="form-control">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="maxDate" class="form-label">Fecha Máxima:</label>
-                        <input type="date" id="maxDate" class="form-control">
-                    </div>
-                    <div class="col-md-4 d-flex align-items-end">
-                        <button id="clearDateFilter" class="btn btn-outline-secondary w-100">Limpiar Filtro</button>
-                    </div>
-                </div>
-                -->
                 <hr>
                 <div class="table-responsive"> 
                     <table id="tablaCompras" class="table table-striped table-hover">
@@ -107,9 +92,7 @@
     let tabla;
 
     $(document).ready(function() {
-        // Inicializa DataTables en tu tabla con el ID "tablaProveedore"
         tabla = $('#tablaCompras').DataTable({
-            // Opciones de idioma para español
             "language": {
                 "lengthMenu": "Mostrar _MENU_ registros por página",
                 "zeroRecords": "No se encontraron resultados",
@@ -125,7 +108,7 @@
                 },
             },
             "columnDefs": [
-                { "type": "date", "targets": 2 } // Columna "Fecha" es la 3ra (índice 2)
+                { "type": "date", "targets": 2 } 
             ]
         });
 
@@ -135,21 +118,16 @@
                 console.log('Filtro Ejecutado. Columna [2]: ', data[2]);
                 const min = $('#minDate').val();
                 const max = $('#maxDate').val();
-                // La fecha de la tabla se toma de la columna de Fecha (índice 2)
                 const date = data[2]; 
 
-                // Función auxiliar para verificar si la fecha de la fila está en el rango
                 let dateInRange = true;
                 
-                // Si la fecha mínima está definida, la fecha de la fila debe ser mayor o igual
                 if (min) {
-                    console.log('Min: ' + min + "\tMax: " + max + "\tDate: " + date)
                     if (date < min) {
                         dateInRange = false;
                     }
                 }
                 
-                // Si la fecha máxima está definida, la fecha de la fila debe ser menor o igual
                 if (max) {
                     if (date > max) {
                         dateInRange = false;
@@ -160,12 +138,10 @@
             }
         );
 
-        // 3. Re-dibujar la tabla al cambiar las fechas
         $('#minDate, #maxDate').on('change', function () {
-            tabla.draw(); // Vuelve a ejecutar el filtro
+            tabla.draw(); 
         });
-        
-        // 4. Limpiar los filtros al hacer clic en el botón
+
         $('#clearDateFilter').on('click', function () {
             $('#minDate').val('');
             $('#maxDate').val('');
