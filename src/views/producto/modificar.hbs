@@ -1,0 +1,87 @@
+<div class="row">
+    {{> navigation}}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Modificar Producto</h1>
+            <a href="/producto/listado" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> Volver a Productos
+            </a>
+        </div>
+        {{#if varMensaje}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                {{#each varMensaje}}
+                <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/if}}
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0">Editar Producto </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id='formModificar' action="/producto/modificar/{{paramProducto.id_producto}}" method="POST">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nombre del Producto</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" 
+                                           value="{{paramProducto.nombre}}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Tipo de Producto</label>
+                                    <select class="form-select" name="tipoProducto" required>
+                                        <option value="">Seleccione un tipo</option> 
+                                        <option value="Almacen" {{#if (eq paramProducto.tipoProducto "Almacen")}}selected{{/if}}>Almacén</option>
+                                        <option value="Carniceria" {{#if (eq paramProducto.tipoProducto "Carniceria")}}selected{{/if}}>Carnicería</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Código de Barras</label>
+                                    <input type="text" class="form-control" id="codBarra" name="codBarra" value="{{paramProducto.cod_barra}}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Proveedor</label>
+                                    <select class="form-select" name="idProveedor" required>
+                                        <option value="">Seleccione un proveedor</option>
+                                        {{#each paramProveedores}}
+                                        <option value="{{this.id_proveedor}}" {{#if (eq this.id_proveedor ../paramProducto.id_proveedor)}} selected {{/if}}>{{this.nombre}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Precio Unitario</label>
+                                    <input type="number" step="0.01" class="form-control" id="precioUnitario" name="precioUnitario" value="{{paramProducto.precio_unitario}}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Stock</label>
+                                    <input type="number" class="form-control" id="stock" name="stock" value="{{paramProducto.stock}}" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Observaciones</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" maxlength="100">{{paramProducto.observacion}}</textarea>
+                                <div class="form-text">Máximo 100 caracteres</div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit"> Actualizar Producto </button>
+                                <a href="/producto/listado" class="btn btn-outline-secondary">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

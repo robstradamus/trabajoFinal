@@ -1,0 +1,61 @@
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Clientes</h1>
+            <a href="/cliente/registrar" class="btn btn-success btn-sm"> Registrar Cliente </a>
+        </div>
+
+        {{#if varMensaje}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                {{#each varMensaje}}
+                <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/if}}
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="card-title mb-0"> Lista de Clientes</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive"> 
+                    <table id="tablaClientes" class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>DNI</th>
+                                <th>Teléfono</th>
+                                <th>Observaciones</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--- VARIABLE DESDE EL CONTORLADOR, MODIFICAR O MANTENER-->
+                            {{#each paramListadoClientes}}
+                            <tr>
+                                <td>{{this.id_cliente}}</td>
+                                <td>{{this.nombre}}</td>
+                                <td>{{this.dni}}</td>
+                                <td>{{this.telefono}}</td>
+                                <td>{{this.observations}}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="/cliente/modificar/{{this.id_cliente}}" class="btn btn-warning"> Modificar </a>
+                                        <a href="/cliente/eliminar/{{this.id_cliente}}" class="btn btn-danger"> Eliminar </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

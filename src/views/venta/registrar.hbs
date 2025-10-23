@@ -1,0 +1,84 @@
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Nueva Venta</h1>
+            <a href="/venta/listado" class="btn btn-outline-secondary btn-sm">Volver a Ventas</a>
+        </div>
+
+        {{#if varMensaje}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                {{#each varMensaje}}
+                <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/if}}
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="card-title mb-0">Registrar Nueva Venta </h5>
+            </div>
+            <div class="card-body">
+                <form id='formVenta' action="/venta/registrar" method="POST">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Cliente</label>
+                            <select class="form-select" name="id_cliente" required>
+                                <option value="">Seleccione cliente</option>
+                                {{#each clientes}}
+                                <option value="{{this.id_cliente}}">{{this.nombre}} - DNI: {{this.dni}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Venta</label>
+                            <input type="date" class="form-control" name="fecha" value="{{fechaActual}}" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Productos</label>
+                        <div class="row mb-2">
+                            <div class="col-md-5">
+                                <select class="form-select" name="productos[0][id_producto]" required>
+                                    <option value="">Seleccione producto</option>
+                                    {{#each productos}}
+                                    <option value="{{this.id_producto}}">
+                                        {{this.nombre}} - ${{this.precio_unitario}} (Stock: {{this.stock}})
+                                    </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" name="productos[0][cantidad]" placeholder="Cantidad" min="1" required>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" name="productos[0][precio_unitario]" placeholder="Precio" step="0.01" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="agregarProducto()">Agregar otro producto</button>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo de Pago</label>
+                            <select class="form-select" name="tipo_pago" required>
+                                <option value="CONTADO">Pago Contado</option>
+                                <option value="CUENTA-CORRIENTE">Cuenta Corriente</option> <!-- MANTENER O MODICAR VARIABLE (CUENTA-CORRIENTE)-->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit">Registrar Venta</button>
+                        <a href="/venta/listado" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="/js/venta.js"></script>
