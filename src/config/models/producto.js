@@ -20,7 +20,7 @@ const producto = db.con_sequelize.define('producto', {
         type: Sequelize.STRING(50)
     },
     cod_barra: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(50),
         unique: true
     },
     precio_unitario: {
