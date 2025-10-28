@@ -1,3 +1,4 @@
+<!--
 <div class="row">
     {{> navigation}}
     
@@ -22,6 +23,7 @@
             <div class="card-header bg-dark text-white">
                 <h5 class="card-title mb-0">Registrar Nueva Venta </h5>
             </div>
+            <input type="text" id="scanInput" class="form-control" placeholder="Escanear código..." autofocus>
             <div class="card-body">
                 <form id='formVenta' action="/venta/registrar" method="POST">
                     <div class="row mb-4">
@@ -68,6 +70,7 @@
                             <select class="form-select" name="tipo_pago" required>
                                 <option value="CONTADO">Pago Contado</option>
                                 <option value="CUENTA-CORRIENTE">Cuenta Corriente</option> <!-- MANTENER O MODICAR VARIABLE (CUENTA-CORRIENTE)-->
+                            <!--
                             </select>
                         </div>
                     </div>
@@ -81,4 +84,162 @@
     </main>
 </div>
 
+-->
+
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Registrar Compra</h1>
+            <a href="/compra/lista" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> Volver a Compras
+            </a>
+        </div>
+
+        {{#if varMensaje}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            <ul class="mb-0 list-unstyled">
+                {{#each varMensaje}}
+                <li>{{this.msg}}</li>
+                {{/each}}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/if}}
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="card-title mb-0">Registrar Nueva Venta </h5>
+            </div>
+            <div class="card-body">
+                <form id='formVenta' action="/venta/registrar" method="POST">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Cliente</label>
+                            <select class="form-select" name="id_cliente">
+                                <option value="">Seleccione cliente</option>
+                                {{#each clientes}}
+                                <option value="{{this.id_cliente}}">{{this.nombre}} - DNI: {{this.dni}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Venta</label>
+                            <input type="date" class="form-control" name="fecha" value="{{fechaActual}}" required>
+                        </div>
+                    </div>
+                    <div class="mb-4"> 
+                        <label class="form-label">Escanear Codigo de Barra</label>
+                        <input type="text" id="scanInput" name="scanInput" class="form-control" placeholder="Escanear código..." autofocus>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Productos</label>
+                        <div class="row mb-2">
+                            <table class="table" id="tablaProductos">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Precio Unitario</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="agregarProducto">Agregar otro producto</button>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo de Pago</label>
+                            <select class="form-select" name="tipo_pago" required>
+                                <option value="CONTADO">Pago Contado</option>
+                                <option value="CORRIENTE">Cuenta Corriente</option> 
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Total a Pagar</label>
+                            <input type="number" step="0.01" class="form-control" name="total" id="total" readonly>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit">Registrar Venta</button>
+                        <a href="/venta/listado" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
 <script src="/js/venta.js"></script>
+<script>
+    function agregarFilaProducto(producto = null) {
+        const tbody = document.querySelector("#tablaProductos tbody");
+        const row = document.createElement("tr");
+
+        const idProducto = producto ? producto.id_producto : '';
+        const nombreProducto = producto ? producto.nombre : '';
+        const precioUnitario = producto ? producto.precio_unitario : '';
+        const stockDisponible = producto ? producto.stock : 'N/A';
+        const esPorEscaneo = producto !== null;
+
+        row.innerHTML = `
+            <td>
+                ${esPorEscaneo 
+                    ? `
+                        ${nombreProducto} (Stock: ${stockDisponible})
+                        <input type="hidden" name="productos[${indiceFila}][id_producto]" value="${idProducto}" class="producto-id">
+                        `
+                    : `
+                        <select class="form-select producto-select" name="productos[${indiceFila}][id_producto]" required>
+                            <option value="">Seleccione producto</option>
+                            {{#each paramProducto}}
+                                <option 
+                                    value="{{this.id_producto}}" 
+                                    data-precio="{{this.precio_unitario}}" 
+                                    data-stock="{{this.stock}}">
+                                    {{this.nombre}} - $ {{this.precio_unitario}} (Stock: {{this.stock}})
+                                </option>
+                            {{/each}}
+                        </select>
+                `}
+            </td>
+            <td>
+                <input type="number" name="productos[${indiceFila}][cantidad]" class="form-control cantidad" min="1" max="${stockDisponible}" value="${esPorEscaneo ? '1' : ''}" required>
+            </td>
+            <td>
+                <input type="number" name="productos[${indiceFila}][precio_unitario]" class="form-control precio" step="0.01" value="${esPorEscaneo ? precioUnitario : ''}" required>
+            </td>
+            <td><input type="number" step="0.01" name="subtotal[]" class="form-control subtotal" readonly></td>
+            <td><button type="button" class="btn btn-danger btn-sm eliminar">X</button></td>
+        `;
+
+        tbody.appendChild(row);
+        indiceFila++; 
+
+        row.querySelector(".cantidad").addEventListener("input", actualizarTotales);
+        row.querySelector(".precio").addEventListener("input", actualizarTotales);
+        
+        if (!esPorEscaneo) {
+            row.querySelector("select").addEventListener("change", function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const precio = parseFloat(selectedOption.getAttribute('data-precio'));
+                row.querySelector(".precio").value = precio.toFixed(2);
+                actualizarTotales();
+            });
+        }
+        
+        row.querySelector(".eliminar").addEventListener("click", () => {
+            row.remove();
+            actualizarTotales();
+        });
+
+        if (producto || !esPorEscaneo) {
+            actualizarTotales();
+        }
+}
+</script>

@@ -37,3 +37,92 @@ function htmlToElement(html) {
     template.innerHTML = html.trim();
     return template.content.firstChild;
 }
+
+// -----------------------------------------------
+let indiceFila = 0;
+
+// Verifica si el producto ya esta agregado para aumentarle la cantidad
+
+function manejarProductoEscaneado(producto) {
+    let productoEncontrado = false;
+
+    document.querySelectorAll("#tablaProductos tbody tr").forEach(row => {
+        const idInput = row.querySelector('.producto-id'); 
+        
+        if (idInput && idInput.value == producto.id_producto) {
+            
+            const cantidadInput = row.querySelector(".cantidad");
+            
+            let nuevaCantidad = parseInt(cantidadInput.value) + 1;
+            cantidadInput.value = nuevaCantidad;
+
+            row.querySelector(".precio").value = producto.precio_unitario;
+
+            productoEncontrado = true;
+        }
+    });
+
+    if (productoEncontrado) {
+        actualizarTotales();
+    } else {
+        agregarFilaProducto(producto);
+    }
+}
+
+document.getElementById("agregarProducto").addEventListener("click", () => {
+    agregarFilaProducto(); 
+});
+
+// Se calcula el total de la venta
+
+function actualizarTotales() {
+    let total = 0;
+    document.querySelectorAll("#tablaProductos tbody tr").forEach(row => {
+        const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
+        const precio = parseFloat(row.querySelector(".precio").value) || 0;
+        const subtotal = cantidad * precio;
+        
+        row.querySelector(".subtotal").value = subtotal.toFixed(2);
+        total += subtotal;
+    });
+    document.getElementById("total").value = total.toFixed(2); 
+}
+
+// Se obtiene el input del cod 
+
+const scanInput = document.getElementById('scanInput');
+scanInput.focus();
+
+scanInput.addEventListener('keydown', etiqueta => {
+    if(etiqueta.key === "Enter") {
+        etiqueta.preventDefault(); 
+        let code = etiqueta.target.value.trim();
+        etiqueta.target.value = "";
+        obtenerDatosProducto(code); 
+    }
+});
+
+// Se busca el cod
+
+function obtenerDatosProducto(code) {
+    const url = `/producto/buscar/${code}`; 
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.id_producto) {
+                manejarProductoEscaneado(data); 
+            } else {
+                alert("Producto no encontrado o código inválido.");
+            }
+        })
+        .catch(error => {
+            console.error("Hubo un problema con la petición fetch:", error);
+            alert("Error al buscar producto: " + error.message);
+        });
+}
