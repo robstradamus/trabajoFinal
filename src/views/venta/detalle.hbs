@@ -1,0 +1,146 @@
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Detalle de Venta {{paramVenta.id_venta}}</h1>
+            <div>
+                {{#if (gt paramVenta.saldo_pendiente 0)}}
+                <a href="/pago/registrar/{{paramVenta.id_venta}}" class="btn btn-success btn-sm me-2"> Registrar Pago </a>
+                {{/if}}
+                <a href="/venta/listado" class="btn btn-outline-secondary btn-sm"> Volver a Ventas</a>
+            </div>
+        </div>
+<!-- Detalle de la Venta-->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="card-title mb-0">Información de la Venta</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Venta ID:</strong></td>
+                                <td>#{{paramVenta.id_venta}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fecha:</strong></td>
+                                <td>{{paramVenta.fecha}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cliente:</strong></td>
+                                <td>{{paramVenta.cliente_nombre}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Estado:</strong></td>
+                                <td>
+                                    {{#if (eq paramVenta.saldo_pendiente 0)}}
+                                    <span class="badge bg-success">Pagado</span>
+                                    {{else}}
+                                    <span class="badge bg-warning">Pendiente: ${{paramVenta.saldo_pendiente}}</span>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Totales</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Total Venta:</strong></td>
+                                <td class="fs-5">${{paramVenta.total}}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Saldo Pendiente:</strong></td>
+                                <td class="fs-5 {{#if (gt paramVenta.saldo_pendiente 0)}}text-danger{{else}}text-success{{/if}}">
+                                    ${{paramVenta.saldo_pendiente}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pagado:</strong></td>
+                                <td class="fs-5 text-success">${{paramVenta.pagado}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Muesta los Productos -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="card-title mb-0">Productos Vendidos</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each paramDetallesVenta}}
+                            <tr>
+                                <td>{{this.producto_nombre}}</td>
+                                <td>{{this.cantidad}}</td>
+                                <td>${{this.precio_unitario}}</td>
+                                <td>${{this.subtotal}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                        <tfoot class="table-active">
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                <td><strong>${{paramVenta.total}}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historiakl de Pagos (si existe) -->
+        {{#if paramPagos.length}}
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">Historial de Pagos</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Fecha Pago</th>
+                                <th>Monto</th>
+                                <th>Método</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each paramPagos}}
+                            <tr>
+                                <td>{{this.fecha}}</td>
+                                <td>${{this.monto_pago}}</td>
+                                <td>{{this.metodo_pago}}</td>
+                                <td>{{this.observations}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </main>
+</div>

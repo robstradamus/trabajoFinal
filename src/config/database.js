@@ -4,7 +4,7 @@ const con_sequelize = new Sequelize('gestion_almacen', 'root', '',{
     host: 'localhost',
     dialect: 'mysql',
     port: '3306',
-    loggging: false,
+    logging: false,
     define: { timestamps: false},
     pool : {
         max: 5,

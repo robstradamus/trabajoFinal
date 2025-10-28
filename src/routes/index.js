@@ -9,4 +9,5 @@ router.get('/', (request, response) => {
 router.get('/dashboard', (request, response) => {
     return response.render('dashboard')
 });
+
 module.exports = router;
