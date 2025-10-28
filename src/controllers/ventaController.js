@@ -98,12 +98,14 @@ module.exports.registrarVentaPost = async (request, response) => {
 
     const {id_cliente, fecha, total, tipo_pago, productos} = request.body;
     let saldo_pendiente;
-    //console.log(fecha, '\t', total, '\t', tipo_pago, '\t', productos);
+    let estado;
 
     if (tipo_pago === "CORRIENTE") {
-        saldo_pendiente = 0;
-    } else {
         saldo_pendiente = total;
+        estado = "PENDIENTE";
+    } else {
+        saldo_pendiente = 0;
+        estado = "PAGADO";
     }
 
     let insertarVenta = await mVenta.create({
