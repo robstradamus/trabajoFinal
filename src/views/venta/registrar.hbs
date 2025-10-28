@@ -133,6 +133,7 @@
                         <label class="form-label">Escanear Codigo de Barra</label>
                         <input type="text" id="scanInput" name="scanInput" class="form-control" placeholder="Escanear código..." autofocus>
                     </div>
+                    <hr>
                     <div class="mb-4">
                         <label class="form-label">Productos</label>
                         <div class="row mb-2">
@@ -152,6 +153,7 @@
                             <hr>
                         </div>
                     </div>
+                    <hr>
 
                     <div class="row mb-4">
                         <div class="col-md-6">
@@ -176,6 +178,8 @@
     </main>
 </div>
 <script src="/js/venta.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-2.0.8/datatables.min.js"></script>
 <script>
     function agregarFilaProducto(producto = null) {
         const tbody = document.querySelector("#tablaProductos tbody");
@@ -229,6 +233,9 @@
                 const selectedOption = this.options[this.selectedIndex];
                 const precio = parseFloat(selectedOption.getAttribute('data-precio'));
                 row.querySelector(".precio").value = precio.toFixed(2);
+
+                const stock = parseInt(selectedOption.getAttribute('data-stock'));
+                row.querySelector(".cantidad").max = stock;
                 actualizarTotales();
             });
         }
