@@ -1,7 +1,5 @@
 const { validationResult } = require('express-validator');
 const mCliente = require('../config/models/cliente');
-const {request, response} = require('express');
-const {fn} = require('sequelize');
 
 module.exports.listado = async (request, response) => {
     let listadoCategoria = await mCliente.findAll(

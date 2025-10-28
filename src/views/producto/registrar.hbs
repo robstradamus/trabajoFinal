@@ -43,8 +43,11 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Codigo de Barras</label>
-                                    <input type="text" class="form-control" id="codBarra" name="codBarra" required>
+                                    <label class="form-label">Código de Barras</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="codBarra" name="codBarra" value="{{producto.cod_barra}}" required>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="focusScanner()"></button>
+                                    </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Proveedor</label>
@@ -86,3 +89,4 @@
         </div>
     </main>
 </div>
+<script src="/js/codBarra.js"></script>

@@ -1,6 +1,6 @@
 <div class="row">
     {{> navigation}}
-    
+
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Productos</h1>
@@ -34,6 +34,7 @@
                                 <th>Precio</th>
                                 <th>Stock</th>
                                 <th>Proveedor</th>
+                                <th>Observaciones</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -55,6 +56,7 @@
                                     </span>
                                 </td>
                                 <td>{{this.rel_proveedor_producto.nombre}}</td>
+                                <td>{{this.observacion}}</td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="/producto/modificar/{{this.id_producto}}" class="btn btn-warning" title="Editar">Modificar</a>
