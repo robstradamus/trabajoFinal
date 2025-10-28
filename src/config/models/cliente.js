@@ -13,7 +13,6 @@ const cliente = db.con_sequelize.define('cliente', {
     },
     dni: {
         type: Sequelize.INTEGER,
-        unique: true
     },
     telefono: {
         type: Sequelize.INTEGER
