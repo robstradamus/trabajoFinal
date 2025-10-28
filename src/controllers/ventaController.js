@@ -12,7 +12,12 @@ module.exports.buscarProducto = async (request, response) => {
             where: {'cod_barra': cod},
             raw: true
         });
-        response.status(200).json(buscar);
+
+        if (buscar.stock <= 0) {
+            response.status(409).json({error: 'No hay stock.'});
+        } else {
+            response.status(200).json(buscar);
+        }
     } catch (error) {
         response.status(500).json({ error: 'No se encontró el producto.' });
     }
@@ -98,12 +103,14 @@ module.exports.registrarVentaPost = async (request, response) => {
 
     const {id_cliente, fecha, total, tipo_pago, productos} = request.body;
     let saldo_pendiente;
-    //console.log(fecha, '\t', total, '\t', tipo_pago, '\t', productos);
+    let estado;
 
     if (tipo_pago === "CORRIENTE") {
-        saldo_pendiente = 0;
-    } else {
         saldo_pendiente = total;
+        estado = "PENDIENTE";
+    } else {
+        saldo_pendiente = 0;
+        estado = "PAGADO";
     }
 
     let insertarVenta = await mVenta.create({
