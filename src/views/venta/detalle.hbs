@@ -6,7 +6,7 @@
             <h1 class="h2">Detalle de Venta {{paramVenta.id_venta}}</h1>
             <div>
                 {{#if (gt paramVenta.saldo_pendiente 0)}}
-                <a href="/pago/registrar/{{paramVenta.id_venta}}" class="btn btn-success btn-sm me-2"> Registrar Pago </a>
+                <a href="/venta/pago/listado/{{paramVenta.id_venta}}" class="btn btn-success btn-sm me-2"> Registrar Pago </a>
                 {{/if}}
                 <a href="/venta/listado" class="btn btn-outline-secondary btn-sm"> Volver a Ventas</a>
             </div>
@@ -30,7 +30,7 @@
                             </tr>
                             <tr>
                                 <td><strong>Cliente:</strong></td>
-                                <td>{{paramVenta.cliente_nombre}}</td>
+                                <td><span class="badge bg-primary">{{paramVenta.nombre}} - {{paramVenta.dni}}</span></td>
                             </tr>
                             <tr>
                                 <td><strong>Estado:</strong></td>

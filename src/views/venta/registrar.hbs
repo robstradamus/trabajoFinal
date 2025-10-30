@@ -28,10 +28,10 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label class="form-label">Cliente</label>
-                            <select class="form-select" name="id_cliente">
+                            <select class="form-select" arial-label='Cliente' name="id_cliente" id="id_cliente">
                                 <option value="">Seleccione cliente</option>
-                                {{#each clientes}}
-                                <option value="{{this.id_cliente}}">{{this.nombre}} - DNI: {{this.dni}}</option>
+                                {{#each paramCliente}}
+                                    <option value="{{this.id_cliente}}">{{this.nombre}} - DNI: {{this.dni}}</option>
                                 {{/each}}
                             </select>
                         </div>
@@ -50,6 +50,7 @@
                         </div>
                         <small class="form-text text-muted">Escanee el codigo de barras del producto</small>
                     </div>
+                    <hr>
                     <div class="mb-4">
                         <label class="form-label">Productos en la Venta</label>
                         <div class="table-responsive">
@@ -76,6 +77,8 @@
                         </div>
                         <input type="hidden" name="total" id="totalHidden" value="0">
                     </div>
+                    <hr>
+
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label class="form-label">Tipo de Pago</label>
