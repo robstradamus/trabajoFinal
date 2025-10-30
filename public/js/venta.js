@@ -1,4 +1,64 @@
-const producto = require("../../src/config/models/producto");
+//const producto = require("../../src/config/models/producto");
+let tablaCuentaCorriente;
+$(document).ready(function() {
+    tablaCuentaCorriente = $('#tablaCuentaCorriente').DataTable({
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+        }
+    });
+});
+
+let tablaPagosListado;
+$(document).ready(function() {
+    tablaPagosListado = $('#tablaPagosVentas').DataTable({
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+        }
+    });
+});
+
+
+let tablaListado;
+$(document).ready(function() {
+    tablaListado = $('#tablaVentas').DataTable({
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibl    es",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+        }
+    });
+});
 
 let indiceFila = 0;
 function configurarScanner() {
@@ -20,18 +80,9 @@ function configurarScanner() {
 function buscarProducto(codigo) {
     fetch(`/producto/buscar/${codigo}`)
         .then(response => {
+            if (response.status === 501) throw new Error('No hay stock suficiente.');
             if (!response.ok) throw new Error('Producto no encontrado');
             return response.json();
-        })
-        .then(async response => {
-            const data = await response.json();   // <- parseo SIEMPRE el json
-
-            if (!response.ok) {
-                // acá capturás el "No hay stock." del backend
-                throw new Error(data.error);
-            }
-
-            return data;
         })
         .then(producto => {
             if (producto && producto.id_producto) {
@@ -39,6 +90,9 @@ function buscarProducto(codigo) {
             } else {
                 alert("Producto no encontrado");
             }
+        })
+        .then(producto => {
+            
         })
         .catch(error => {
             console.error("Error:", error);
