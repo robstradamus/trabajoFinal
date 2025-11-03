@@ -50,6 +50,11 @@ app.engine('hbs', engine({
         },
         gt: function(a,b){
             return a > b;
+        },
+        section: function(name, options){
+            if(!this._sections) this._sections = {};
+            this._sections[name] = options.fn(this);
+            return null;
         }
     }
 }));

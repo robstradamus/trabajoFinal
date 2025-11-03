@@ -122,12 +122,23 @@ module.exports.registrarVentaPost = async (request, response) => {
         estado = "PAGADO";
     }
 
-    let insertarVenta = await mVenta.create({
-        'id_cliente': id_cliente,
-        'fecha': fecha,
-        'total': total,
-        'saldo_pendiente': saldo_pendiente
-    });
+    let insertarVenta;
+    if (id_cliente) {
+        insertarVenta = await mVenta.create({
+            'id_cliente': id_cliente,
+            'fecha': fecha,
+            'total': total,
+            'saldo_pendiente': saldo_pendiente
+        });
+    } else {
+        insertarVenta = await mVenta.create({
+            'fecha': fecha,
+            'total': total,
+            'saldo_pendiente': saldo_pendiente
+        });
+    }
+    console.log(insertarVenta)
+
     //console.log(insertarVenta);
 
     if (insertarVenta) {
@@ -215,6 +226,9 @@ module.exports.mostrarDetalle = async (request, response) => {
     delete detalleVenta['Cliente.nombre']; 
     detalleVenta.dni = detalleVenta['Cliente.dni'];
     delete detalleVenta['Cliente.dni']; 
+
+    let pagado = detalleVenta.total - detalleVenta.saldo_pendiente;
+    detalleVenta.pagado = pagado;
 
     const listadoDetalleLimpia = listadoDetalle.map(detalles => {
         detalles.producto_nombre = detalles['Producto.nombre'];
