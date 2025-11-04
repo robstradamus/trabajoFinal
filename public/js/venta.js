@@ -1,3 +1,64 @@
+let tablaCuentaCorriente;
+$(document).ready(function() {
+    tablaCuentaCorriente = $('#tablaCuentaCorriente').DataTable({
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+        }
+    });
+});
+
+let tablaPagosListado;
+$(document).ready(function() {
+    tablaPagosListado = $('#tablaPagosVentas').DataTable({
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+        }
+    });
+});
+
+
+let tablaListado;
+$(document).ready(function() {
+    tablaListado = $('#tablaVentas').DataTable({
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibl    es",
+            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+        }
+    });
+});
+
 let indiceFila = 0;
 function configurarScanner() {
     const scanInput = document.getElementById('scanInput');
@@ -18,6 +79,7 @@ function configurarScanner() {
 function buscarProducto(codigo) {
     fetch(`/producto/buscar/${codigo}`)
         .then(response => {
+            if (response.status === 501) throw new Error('No hay stock suficiente.');
             if (!response.ok) throw new Error('Producto no encontrado');
             return response.json();
         })
@@ -27,6 +89,9 @@ function buscarProducto(codigo) {
             } else {
                 alert("Producto no encontrado");
             }
+        })
+        .then(producto => {
+            
         })
         .catch(error => {
             console.error("Error:", error);
@@ -45,8 +110,8 @@ function agregarProductoAVenta(producto) {
         if (idInput && idInput.value == producto.id_producto) {
             //Incrementar cantidad si ya existe
             const cantidadInput = fila.querySelector(".cantidad");
-            const nuevaCantidad = parseInt(cantidadInput.value) + 1;
-            const stock = parseInt(idInput.getAttribute('data-stock'));
+            const nuevaCantidad = parseFloat(cantidadInput.value) + 1;
+            const stock = parseFloat(idInput.getAttribute('data-stock'));
             if (nuevaCantidad > stock) {
                 alert(`No hay suficiente stock. Stock disponible: ${stock}`);
                 return;
@@ -93,7 +158,8 @@ function agregarFilaProducto(producto = null) {
                    name="productos[${indiceFila}][cantidad]" 
                    class="form-control cantidad" 
                    value="1" 
-                   min="1" 
+                   min="0.01" 
+                   step="0.01"
                    ${esPorEscaneo ? `max="${producto.stock}"` : ''}
                    required>
         </td>
@@ -102,11 +168,11 @@ function agregarFilaProducto(producto = null) {
                    name="productos[${indiceFila}][precio_unitario]" 
                    class="form-control precio" 
                    value="${esPorEscaneo ? producto.precio_unitario : '0'}" 
-                   step="0.01" 
+                   step="0.01"
                    required>
         </td>
         <td>
-            <input type="number" 
+            <input type="number"
                    class="form-control subtotal" 
                    readonly 
                    value="${esPorEscaneo ? producto.precio_unitario : '0'}">
@@ -116,7 +182,8 @@ function agregarFilaProducto(producto = null) {
         </td>
     `;
     tbody.appendChild(fila);
-    //Agregar eventos para actualizar totales
+    
+    // Eventos para actualizar totales
     fila.querySelector(".cantidad").addEventListener("input", actualizarTotales);
     fila.querySelector(".precio").addEventListener("input", actualizarTotales);
     

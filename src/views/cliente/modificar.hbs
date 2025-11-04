@@ -25,23 +25,20 @@
                         <h5 class="card-title mb-0"> Editar Cliente </h5>
                     </div>
                     <div class="card-body"> 
-                        <form id='formModificar' action="/cliente/modificar/{{paramCliente.id_cliente}} <!-- VARIABLE DEL CONTROLADOPRT-->" method="POST">
+                        <form id='formModificar' action="/cliente/modificar/{{paramCliente.id_cliente}}" method="POST">
                             <div class="mb-3">
                                 <label class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" 
-                                       value="{{paramCliente.nombre}}" required>
+                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{paramCliente.nombre}}" required>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">DNI</label>
-                                    <input type="text" class="form-control" id="dni" name="dni" 
-                                           value="{{paramCliente.dni}}" required>
+                                    <input type="text" class="form-control" id="dni" name="dni" value="{{paramCliente.dni}}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono" 
-                                           value="{{paramCliente.telefono}}">
+                                    <input type="text" class="form-control" id="telefono" name="telefono" value="{{paramCliente.telefono}}">
                                 </div>
                             </div>
 

@@ -1,10 +1,6 @@
 const { validationResult } = require('express-validator');
 const mProducto = require('../config/models/producto');
 const mProveedor = require('../config/models/proveedor');
-const {request, response} = require('express');
-const {fn} = require('sequelize');
-
-
 
 module.exports.producto = async (request, response) => {
     let datosProveedores = await mProveedor.findAll(
@@ -120,7 +116,7 @@ module.exports.modificar_post = async (request, response) => {
         }
     );
     if(modificar){
-        request.flash('varEstiloMensaje', 'succes');
+        request.flash('varEstiloMensaje', 'success');
         request.flash('varMensaje', [{msg: 'Producto modificado con exito'}]);
         return response.redirect('/producto/listado');
     }
