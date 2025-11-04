@@ -1,4 +1,3 @@
-//const producto = require("../../src/config/models/producto");
 let tablaCuentaCorriente;
 $(document).ready(function() {
     tablaCuentaCorriente = $('#tablaCuentaCorriente').DataTable({
@@ -111,8 +110,8 @@ function agregarProductoAVenta(producto) {
         if (idInput && idInput.value == producto.id_producto) {
             //Incrementar cantidad si ya existe
             const cantidadInput = fila.querySelector(".cantidad");
-            const nuevaCantidad = parseInt(cantidadInput.value) + 1;
-            const stock = parseInt(idInput.getAttribute('data-stock'));
+            const nuevaCantidad = parseFloat(cantidadInput.value) + 1;
+            const stock = parseFloat(idInput.getAttribute('data-stock'));
             if (nuevaCantidad > stock) {
                 alert(`No hay suficiente stock. Stock disponible: ${stock}`);
                 return;
@@ -159,7 +158,8 @@ function agregarFilaProducto(producto = null) {
                    name="productos[${indiceFila}][cantidad]" 
                    class="form-control cantidad" 
                    value="1" 
-                   min="1" 
+                   min="0.01" 
+                   step="0.01"
                    ${esPorEscaneo ? `max="${producto.stock}"` : ''}
                    required>
         </td>
@@ -168,11 +168,11 @@ function agregarFilaProducto(producto = null) {
                    name="productos[${indiceFila}][precio_unitario]" 
                    class="form-control precio" 
                    value="${esPorEscaneo ? producto.precio_unitario : '0'}" 
-                   step="0.01" 
+                   step="0.01"
                    required>
         </td>
         <td>
-            <input type="number" 
+            <input type="number"
                    class="form-control subtotal" 
                    readonly 
                    value="${esPorEscaneo ? producto.precio_unitario : '0'}">
@@ -182,7 +182,8 @@ function agregarFilaProducto(producto = null) {
         </td>
     `;
     tbody.appendChild(fila);
-    //Agregar eventos para actualizar totales
+    
+    // Eventos para actualizar totales
     fila.querySelector(".cantidad").addEventListener("input", actualizarTotales);
     fila.querySelector(".precio").addEventListener("input", actualizarTotales);
     

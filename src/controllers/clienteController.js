@@ -89,44 +89,34 @@ module.exports.modificar = async (request, response) => {
 module.exports.modificar_post = async (request, response) => {
     const {id_cliente} = request.params;
     const errores = validationResult(request);
+    
     if(!errores.isEmpty()){
         request.flash('varEstiloMensaje', 'danger');
         request.flash('varMensaje', errores.array());
         return response.redirect('/cliente/listado');
     }
-    const {nombre, dni, telefono, observaciones}= request.body;
-    let cliente_existe = await mCliente.findOne(
-        {
-            where:{'dni': dni, 'nombre': nombre, 'telefono': telefono, 'observaciones': observaciones},
-            raw:true
-        }
-    );
-    if(cliente_existe){
-        request.flash('varEstiloMensaje', 'danger');
-        request.flash('varMensaje', [{msg: 'El DNI ya esta registrado'}]);
-        return response.redirect('/cliente/listado');
-    }
-    else{
+    
+    const {nombre, dni, telefono, observaciones} = request.body;
     let modificar = await mCliente.update(
-        {
-            'nombre': nombre,
-            'dni': dni,
-            'telefono': telefono,
-            'observaciones': observaciones
-        },
-        {
-            where: {'id_cliente': id_cliente}
+            {
+                'nombre': nombre,
+                'dni': dni,
+                'telefono': telefono,
+                'observaciones': observaciones
+            },
+            {
+                where: {'id_cliente': id_cliente}
+            }
+        );
+        
+        if(modificar){
+            request.flash('varEstiloMensaje', 'success');
+            request.flash('varMensaje', [{msg: 'Cliente modificado con éxito'}]);
+            return response.redirect('/cliente/listado');
         }
-    );
-    if(modificar){
-        request.flash('varEstiloMensaje', 'succes');
-        request.flash('varMensaje', [{msg: 'Cliente registrado con exito'}]);
-        return response.redirect('/cliente/listado');
-    }
-    else{
-        request.flash('varEstiloMensaje', 'danger');
-        request.flash('varMensaje', [{msg: 'Error al registrar el cliente'}]);
-        return response.redirect('/cliente/listado');
-    }
-    }
+        else{
+            request.flash('varEstiloMensaje', 'danger');
+            request.flash('varMensaje', [{msg: 'Error al modificar el cliente'}]);
+            return response.redirect('/cliente/listado');
+        }
 };

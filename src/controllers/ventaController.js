@@ -4,7 +4,6 @@ const mVenta = require('../config/models/venta');
 const mCliente = require('../config/models/cliente');
 const mPagoCliente = require('../config/models/pagoCliente');
 const { validationResult } = require('express-validator');
-const { where } = require('sequelize');
 
 module.exports.buscarProducto = async (request, response) => {
     const cod = request.params.code;
@@ -137,14 +136,11 @@ module.exports.registrarVentaPost = async (request, response) => {
             'saldo_pendiente': saldo_pendiente
         });
     }
-    console.log(insertarVenta)
-
-    //console.log(insertarVenta);
 
     if (insertarVenta) {
         const id_venta = insertarVenta.id_venta;
-        for (const item of productos) {
-            console.log(item.subtotal);
+        for (const item of productos) { 
+            console.log('Producto:', item);
             const subtotalDetalle = (item.cantidad * item.precio_unitario).toFixed(2);
             const insertarDetalle = await mDetalleVenta.create({
                 'id_producto': item.id_producto,
@@ -165,13 +161,11 @@ module.exports.registrarVentaPost = async (request, response) => {
                 raw: true
             });
 
-            let nuevoStock = parseInt(datosProducto.stock) - parseInt(item.cantidad);
+            let nuevoStock = parseFloat(datosProducto.stock) - parseFloat(item.cantidad);
 
             const actualizarStock = await mProducto.update({
                 "stock": nuevoStock
             }, {where: {"id_producto": item.id_producto}});
-
-            //console.log(actualizarStock);
         }
         request.flash('varEstiloMensaje', 'success');
         request.flash('varMensaje', [{msg: "Venta registrada con éxito." }]);

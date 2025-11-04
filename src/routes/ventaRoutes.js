@@ -15,9 +15,9 @@ router.post('/venta/registrar', [
     body('id_cliente', 'Cliente incorrecto.').optional({ checkFalsy: true }).trim().toInt(),
     body('fecha', 'La fecha es obligatoria.').notEmpty().isDate(),
     body('productos', 'Debe incluir al menos un producto.').isArray({min: 1}),
-    body('productos.*.id_producto', 'El debe seleccionar el producto.').notEmpty().toInt(),
-    body('productos.*.cantidad', 'La cantidad es obligatoria').notEmpty().isInt({min: 1}).toInt(),
-    body('productos.*.precio_unitario', 'El precio es obligatorio').notEmpty().isFloat().toFloat(),
+    body('productos.*.id_producto', 'Debe seleccionar el producto.').notEmpty().toInt(),
+    body('productos.*.cantidad', 'La cantidad es obligatoria').notEmpty().isFloat({ min: 0.01 }).toFloat(),
+    body('productos.*.precio_unitario', 'El precio es obligatorio').notEmpty().isFloat({ min: 0.01 }).toFloat(),
     body('tipo_pago', 'El tipo de pago es obligatorio').trim()
 ], ventaController.registrarVentaPost);
 
