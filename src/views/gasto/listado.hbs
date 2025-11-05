@@ -21,13 +21,11 @@
                 <form action="/gasto/listado" method="GET" class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Buscar</label>
-                        <input type="text" class="form-control" name="busqueda" placeholder="Buscar en descripción..." value="{{filters.busqueda}}">
-                    </div>
+                        <input type="text" class="form-control" name="busqueda" placeholder="Buscar en descripción..." value="{{filtros.busqueda}}">
                     <div class="col-md-4">
                         <label class="form-label">Tipo de Gasto</label>
                         <select class="form-select" name="tipoGasto">
                             <option value="">Todos los tipos</option>
-                            <!-- USAR 'filtros' DE PARAMETROS PARA HACER LA BUSQUEDA DEL SELECT-->
                             <option value="SUELDOS" {{#if (eq filtros.tipoGasto 'SUELDOS')}}selected{{/if}}>Sueldos</option>
                             <option value="SERVICIOS" {{#if (eq filtros.tipoGasto 'SERVICIOS')}}selected{{/if}}>Servicios</option>
                             <option value="MANTENIMIENTO" {{#if (eq filtros.tipoGasto 'MANTENIMIENTO')}}selected{{/if}}>Mantenimiento</option>
@@ -43,7 +41,7 @@
         </div>
         <div class="card shadow-sm">
             <div class="card-body">
-                {{#if gastos.length}}
+                {{#if paramGasto.length}}
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead class="table-dark">
@@ -55,9 +53,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each gastos}}
+                            {{#each paramGasto}}
                             <tr>
-                                <td>{{formatDate this.fecha}}</td>
+                                <td>{{this.fecha}}</td>
                                 <td>
                                     <span class="badge bg-secondary">{{this.tipoGasto}}</span>
                                 </td>
