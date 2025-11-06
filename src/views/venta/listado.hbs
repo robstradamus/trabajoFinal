@@ -43,7 +43,7 @@
                             {{#each paramListadoVentas}}
                             <tr>
                                 <td>#{{this.id_venta}}</td>
-                                <td>{{this.fecha}}</td>
+                                <td>{{formatDate this.fecha}}</td>
                                 <td><span class="badge bg-primary">{{this.nombre_cliente}} - DNI {{this.dni_cliente}}</span></td>
                                 <td>${{this.total}}</td>
                                 <td><span class="badge bg-{{#if (eq this.saldo_pendiente 0)}}success{{else}}danger{{/if}}">${{this.saldo_pendiente}}</span></td>

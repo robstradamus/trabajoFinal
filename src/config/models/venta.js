@@ -14,7 +14,7 @@ const venta = db.con_sequelize.define('venta', {
         onDelete: 'SET NULL'
     },
     fecha: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATE
     },
     total: {
         type: Sequelize.FLOAT

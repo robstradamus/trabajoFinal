@@ -19,7 +19,9 @@ const gasto = db.con_sequelize.define('gasto', {
     },
     tipoGasto: {
         type: Sequelize.STRING(50)
-    }
+    },
+    tableName: 'gasto',
+    timestamps: false
 });
 
 module.exports = gasto;

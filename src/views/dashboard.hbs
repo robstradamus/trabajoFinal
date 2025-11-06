@@ -6,93 +6,111 @@
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Inicio</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
-                <button type="button" class="btn btn-sm btn-primary">Nueva Venta</button>
+                <a href="/venta/registrar" class="btn btn-sm btn-primary">Nueva Venta</a>
             </div>
         </div>
-
         <div class="row mb-4">
-            <div class="col-md-4">
+            <div class="col-md-4 mb-3">
                 <div class="card text-white bg-primary">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h5 class="card-title">Saldo Total</h5>
-                                <h2 class="card-text">$15,250.00</h2>
-                            </div>
-                        </div>
+                        <h5 class="card-title">Saldo Total (Hoy)</h5>
+                        <h2 class="card-text">{{formatMoney totalDia}}</h2>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-success">
+            <div class="col-md-4 mb-3">
+                <div class="card text-white bg-success"> 
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h5 class="card-title">Total Carnicería</h5>
-                                <h2 class="card-text">$8,750.00</h2>
-                            </div>
-                        </div>
+                        <h5 class="card-title">Total Carnicería</h5>
+                        <h2 class="card-text">{{formatMoney totalesPorSector.carniceria}}</h2>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+
+            <div class="col-md-4 mb-3">
                 <div class="card text-white bg-warning">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h5 class="card-title">Total Almacén</h5>
-                                <h2 class="card-text">$6,500.00</h2>
-                            </div>
-                        </div>
+                        <h5 class="card-title">Total Almacén</h5>
+                        <h2 class="card-text">{{formatMoney totalesPorSector.almacen}}</h2>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">Ultimas Ventas</h5>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Últimas Ventas</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Venta #</th>
+                                        <th>Fecha</th>
+                                        <th>Cliente</th>
+                                        <th class="text-end">Total</th>
+                                        <th class="text-center">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each ultimasVentas}}
+                                    <tr>
+                                        <td>#{{this.id_venta}}</td>
+                                        <td>{{formatDate this.fecha}}</td>
+                                        <td>{{this.Cliente.nombre}}</td>
+                                        <td class="text-end">{{formatMoney this.total}}</td>
+                                        <td class="text-center">
+                                            {{#if this.saldo_pendiente}}
+                                            <span class="badge bg-warning">Pendiente</span>
+                                            {{else}}
+                                            <span class="badge bg-success">Completada</span>
+                                            {{/if}}
+                                        </td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td colspan="5" class="text-center">No hay ventas registradas hoy.</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Venta</th>
-                                <th>Fecha</th>
-                                <th>Cliente</th>
-                                <th>Productos</th>
-                                <th>Tipo</th>
-                                <th>Total</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#00125</td>
-                                <td>15/03/2024</td>
-                                <td>Juan Pérez</td>
-                                <td>3 productos</td>
-                                <td><span class="badge bg-success">Almacén</span></td>
-                                <td>$450.00</td>
-                                <td><span class="badge bg-success">Completada</span></td>
-                            </tr>
-                            <tr>
-                                <td>#00121</td>
-                                <td>13/03/2024</td>
-                                <td>Roberto Díaz</td>
-                                <td>6 productos</td>
-                                <td><span class="badge bg-danger">Carnicería</span></td>
-                                <td>$520.25</td>
-                                <td><span class="badge bg-success">Completada</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Productos con Bajo Stock</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover align-center">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th class="text-end">Stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each bajoStock}}
+                                    <tr class="table-danger">
+                                        <td>{{this.nombre}}</td>
+                                        <td class="text-end fw-bold">{{this.stock}}</td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td colspan="2" class="text-center">No hay productos con bajo stock.</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
-</div>
-</div>
-</main>
-
 </div>

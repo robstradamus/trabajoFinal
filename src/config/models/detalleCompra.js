@@ -26,7 +26,9 @@ const detalleCompra = db.con_sequelize.define('detalleCompra', {
     },
     subTotal: {
         type: Sequelize.FLOAT
-    }
+    },
+    tableName: 'detalleCompra',
+    timestamps: false
 });
 
 module.exports = detalleCompra;
