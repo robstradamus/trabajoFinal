@@ -27,12 +27,11 @@
                         <form action="/gasto/registrar" method="POST">
                             <div class="mb-3">
                                 <label class="form-label">Fecha del Gasto</label>
-                                <input type="date" class="form-control" name="fecha" value="{{fechaActual}}" required>
+                                <input type="date" class="form-control" name="fecha" id="fecha" value="{{fechaactual}}" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tipo de Gasto</label>
-                                <select class="form-select" name="tipoGasto" required>
-                                    <option value="">Seleccione tipo de gasto</option>
+                                <select class="form-select" name="tipoGasto" id="tipoGasto" required>
                                     <option value="SUELDOS">Sueldos - Personal</option>
                                     <option value="SERVICIOS">Servicios (Luz, Agua, Internet)</option>
                                     <option value="MANTENIMIENTO">Mantenimiento</option>
@@ -42,7 +41,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Descripción</label>
-                                <input type="text" class="form-control" name="descripcion" 
+                                <input type="text" class="form-control" name="descripcion" id="descripcion" 
                                        placeholder="Ej: Pago de luz diciembre, Sueldo empleado Juan, Productos de limpieza, etc." 
                                        maxlength="100" required>
                             </div>
@@ -50,7 +49,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Monto</label>
                                 <div class="input-group">
-                                    <input type="number" step="0.01" class="form-control" name="monto" placeholder="0.00" min="0.01" required>
+                                    <input type="number" step="0.01" class="form-control" name="monto" id="monto" placeholder="0.00" min="0.01" required>
                                 </div>
                             </div>
                             <div class="d-grid gap-2">
