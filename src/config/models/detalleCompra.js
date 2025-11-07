@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const detalleCompra = db.con_sequelize.define('detalleCompra', {
+const atributos = {
     id_detalle_compra: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -27,6 +27,13 @@ const detalleCompra = db.con_sequelize.define('detalleCompra', {
     subTotal: {
         type: Sequelize.FLOAT
     }
-});
+};
+
+const opciones = {
+    tableName: 'detalleCompras',
+    timestamps: false
+};
+
+const detalleCompra = db.con_sequelize.define('detalleCompra', atributos, opciones);
 
 module.exports = detalleCompra;

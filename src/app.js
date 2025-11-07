@@ -56,6 +56,16 @@ app.engine('hbs', engine({
             if(!this._sections) this._sections = {};
             this._sections[name] = options.fn(this);
             return null;
+        },
+        formatMoney: function (value) {
+            if (typeof value !== 'number') {
+                    value = parseFloat(value) || 0;
+            }
+            return new Intl.NumberFormat('es-AR', {style: 'currency', currency: 'ARS'}).format(value);
+        },
+        formatDate: function (date) {
+            if (!date) return '';
+            return new Date(date).toLocaleDateString('es-AR', {day: '2-digit', month: '2-digit', year: 'numeric'});
         }
     }
 }));

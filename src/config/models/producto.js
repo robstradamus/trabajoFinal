@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const producto = db.con_sequelize.define('producto', {
+const atributos = {
     id_producto: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -32,6 +32,13 @@ const producto = db.con_sequelize.define('producto', {
     observacion: {
         type: Sequelize.STRING(100)
     }
-});
+};
+
+const opciones = {
+    tableName: 'productos', 
+    timestamps: false
+};
+
+const producto = db.con_sequelize.define('producto', atributos, opciones);
 
 module.exports = producto;

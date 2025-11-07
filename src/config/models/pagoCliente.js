@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const pagoCliente = db.con_sequelize.define('pagoCliente', {
+const atributos = {
     id_pagoCliente: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -30,6 +30,13 @@ const pagoCliente = db.con_sequelize.define('pagoCliente', {
     observaciones: {
         type: Sequelize.STRING(50)
     }
-});
+};
+
+const opciones = {
+    tableName: 'pagoClientes', 
+    timestamps: false
+};
+
+const pagoCliente = db.con_sequelize.define('pagoCliente', atributos, opciones);
 
 module.exports = pagoCliente;

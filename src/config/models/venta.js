@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const venta = db.con_sequelize.define('venta', {
+const atributos = {
     id_venta: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -14,7 +14,7 @@ const venta = db.con_sequelize.define('venta', {
         onDelete: 'SET NULL'
     },
     fecha: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATE 
     },
     total: {
         type: Sequelize.FLOAT
@@ -22,6 +22,13 @@ const venta = db.con_sequelize.define('venta', {
     saldo_pendiente: {
         type: Sequelize.FLOAT
     }
-});
+};
+
+const opciones = {
+    tableName: 'venta', 
+    timestamps: false
+};
+
+const venta = db.con_sequelize.define('venta', atributos, opciones);
 
 module.exports = venta;

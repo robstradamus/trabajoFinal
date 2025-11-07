@@ -7,7 +7,7 @@ const { validationResult } = require('express-validator');
 
 module.exports.buscarProducto = async (request, response) => {
     const cod = request.params.code;
-    console.log(cod);
+    //console.log(cod);
     try {
         let buscar = await mProducto.findOne({
             where: {'cod_barra': cod},
@@ -25,25 +25,12 @@ module.exports.buscarProducto = async (request, response) => {
 }
 
 module.exports.registrarVenta = async (request, response) => {
-    let listadoClientes = await mCliente.findAll({
-        raw: true
-    });
-
-    let datosProducto = await mProducto.findAll({
-        raw: true
-    });
-
-    console.log(listadoClientes);
-
-    const today = new Date();
-    const año = today.getFullYear();
-    const mes = String(today.getMonth() + 1).padStart(2, '0'); 
-    const dia = String(today.getDate()).padStart(2, '0'); 
-    let fecha = año + "-" + mes + "-" + dia;
-
-    return response.render('venta/registrar', {paramProducto: datosProducto, fechaActual: fecha, paramCliente: listadoClientes});
-}
-
+    const hoyString = new Date().toLocaleString('sv-SE', { timeZone: 'America/Argentina/Buenos_Aires' });
+    const fechaFormateada = hoyString.split(' ')[0];
+    let listadoClientes = await mCliente.findAll({ raw: true });
+    //console.log('listadoClientes');
+    return response.render('venta/registrar', {paramCliente: listadoClientes, fechaActual: fechaFormateada});
+};
 module.exports.registrarVentaPost2 = async (request, response) => {
     const errores = validationResult(request);
     if (!errores.isEmpty()) {
@@ -53,7 +40,7 @@ module.exports.registrarVentaPost2 = async (request, response) => {
     }
 
     const {cliente, fecha, total, producto, cantidad, precio_unitario, subtotal} = request.body;
-    console.log(request.body);
+   // console.log(request.body);
     let insertarVenta = await mVenta.create({
         'id_cliente': cliente,
         'fecha': fecha,
@@ -120,18 +107,19 @@ module.exports.registrarVentaPost = async (request, response) => {
         saldo_pendiente = 0;
         estado = "PAGADO";
     }
-
+    const fechaDeVenta = new Date();
+    const [anio, mes, dia] = fecha.split('-').map(Number); fechaDeVenta.setFullYear(anio, mes - 1, dia);
     let insertarVenta;
     if (id_cliente) {
         insertarVenta = await mVenta.create({
             'id_cliente': id_cliente,
-            'fecha': fecha,
+            'fecha': fechaDeVenta,
             'total': total,
             'saldo_pendiente': saldo_pendiente
         });
     } else {
         insertarVenta = await mVenta.create({
-            'fecha': fecha,
+            'fecha': fecfechaDeVenta,
             'total': total,
             'saldo_pendiente': saldo_pendiente
         });
@@ -140,7 +128,7 @@ module.exports.registrarVentaPost = async (request, response) => {
     if (insertarVenta) {
         const id_venta = insertarVenta.id_venta;
         for (const item of productos) { 
-            console.log('Producto:', item);
+            //console.log('Producto:', item);
             const subtotalDetalle = (item.cantidad * item.precio_unitario).toFixed(2);
             const insertarDetalle = await mDetalleVenta.create({
                 'id_producto': item.id_producto,
@@ -193,7 +181,7 @@ module.exports.mostrarListado = async (request, response) => {
         return venta;
     });
 
-    console.log(listadoVentaLimpia);
+    //console.log(listadoVentaLimpia);
     return response.render('venta/listado', {paramListadoVentas: listadoVentaLimpia});
 }
 
@@ -264,7 +252,7 @@ module.exports.listadoPagos = async (request, response) => {
     });
 
 
-    console.log(listadoPagosLimpia);
+    //console.log(listadoPagosLimpia);
     return response.render('venta/pagos', {paramListadoPagosVentas: listadoPagosLimpia, id_venta: id_venta, saldo_pendiente: listadoVenta.saldo_pendiente});
 }
 
@@ -283,7 +271,7 @@ module.exports.registrarPago = async (request, response) => {
     delete datosVenta['Cliente.nombre'];
     delete datosVenta['Cliente.dni'];
 
-    console.log(datosVenta);
+    //console.log(datosVenta);
     return response.render('venta/registrarPago', {paramDatosVenta: datosVenta});
 }
 
