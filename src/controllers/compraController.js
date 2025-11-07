@@ -4,7 +4,6 @@ const mCompra = require('../config/models/compra');
 const mDetalleCompra = require('../config/models/detalleCompra');
 const mPagoProveedor = require('../config/models/pagoProveedor');
 const mProducto = require('../config/models/producto');
-const { where } = require('sequelize');
 
 module.exports.mostrarRegistrar = async (request, response) => {
     let datosProveedor = await mProveedor.findAll({

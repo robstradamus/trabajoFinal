@@ -16,6 +16,9 @@ const proveedorRoutes = require('./routes/proveedorRoutes');
 const productoRoutes = require('./routes/productoRoutes');
 const compraRoutes = require('./routes/compraRoutes');
 const ventaRoutes = require('./routes/ventaRoutes');
+const clienteRoutes = require('./routes/clienteRoutes');
+const cuentaCorrienteRoutes = require('./routes/cuentaCorrienteRoutes');
+const gastoRoutes = require('./routes/gastoRoutes');
 
 //Configuracion de sesiones
 app.use(session({
@@ -48,6 +51,11 @@ app.engine('hbs', engine({
         },
         gt: function(a,b){
             return a > b;
+        },
+        section: function(name, options){
+            if(!this._sections) this._sections = {};
+            this._sections[name] = options.fn(this);
+            return null;
         }
     }
 }));
@@ -65,5 +73,9 @@ app.use('/', proveedorRoutes);
 app.use('/', productoRoutes);
 app.use('/', compraRoutes);
 app.use('/', ventaRoutes);
+app.use('/', clienteRoutes);
+app.use('/', cuentaCorrienteRoutes);
+app.use('/', gastoRoutes);
+
 
 module.exports = app;
