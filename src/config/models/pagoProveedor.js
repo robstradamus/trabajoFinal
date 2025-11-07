@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const pagoProveedor = db.con_sequelize.define('pagoProveedor', {
+const atributos = {
     id_pagoProveedor: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -25,6 +25,13 @@ const pagoProveedor = db.con_sequelize.define('pagoProveedor', {
     observaciones: {
         type: Sequelize.STRING(100)
     }
-});
+};
+
+const opciones = {
+    tableName: 'pagoProveedors',
+    timestamps: false
+};
+
+const pagoProveedor = db.con_sequelize.define('pagoProveedor', atributos, opciones);
 
 module.exports = pagoProveedor;

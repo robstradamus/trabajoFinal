@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const cliente = db.con_sequelize.define('cliente', {
+const atributos = {
     id_cliente: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,14 +12,21 @@ const cliente = db.con_sequelize.define('cliente', {
         type: Sequelize.STRING(50)
     },
     dni: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER, 
     },
     telefono: {
-        type: Sequelize.STRING(10)
+        type: Sequelize.STRING(10) 
     },
     observaciones: {
         type: Sequelize.STRING(100)
     }
-});
+};
+
+const opciones = {
+    tableName: 'clientes',
+    timestamps: false
+};
+
+const cliente = db.con_sequelize.define('cliente', atributos, opciones);
 
 module.exports = cliente;

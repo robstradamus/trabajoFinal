@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const gasto = db.con_sequelize.define('gasto', {
+const atributos = {
     id_gasto: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -9,19 +9,24 @@ const gasto = db.con_sequelize.define('gasto', {
         allowNull: false
     },
     descripcion: {
-        type: Sequelize.STRING(100)
+        type: Sequelize.STRING(100) 
     },
     monto: {
         type: Sequelize.FLOAT
     },
     fecha: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATE
     },
     tipoGasto: {
         type: Sequelize.STRING(50)
-    },
-    tableName: 'gasto',
+    }
+};
+
+const opciones = {
+    tableName: 'gastos', 
     timestamps: false
-});
+};
+
+const gasto = db.con_sequelize.define('gasto', atributos, opciones);
 
 module.exports = gasto;
