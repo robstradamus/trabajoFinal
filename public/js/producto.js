@@ -1,6 +1,12 @@
 let tabla;
 $(document).ready(function() {
-    tabla = $('#tablaProveedores').DataTable({
+    $('#idProveedor').select2({
+        theme: 'bootstrap-5',   // usa el estilo de Bootstrap 4 (funciona bien con Bootstrap 5 también)
+        placeholder: 'Buscar Proveedor...',
+        allowClear: true
+    });
+
+    tabla = $('#tablaProductos').DataTable({
         "language": {
             "lengthMenu": "Mostrar _MENU_ registros por página",
             "zeroRecords": "No se encontraron resultados",

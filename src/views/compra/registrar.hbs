@@ -1,3 +1,8 @@
+<style>
+.select2-container--bootstrap-5 .select2-selection__rendered {
+  margin-right: 1.5rem;    /* separa el texto del borde derecho */
+}
+</style>
 <div class="row">
     {{> navigation}}
     
@@ -33,6 +38,7 @@
                             <div class="mb-3"> 
                                 <label class="form-label">Proveedor</label>
                                 <select class="form-select" arial-label='Proveedor' name="proveedor" id="proveedor">
+                                    <option value=""></option>
                                     {{#each paramProveedor}}
                                         <option value="{{this.id_proveedor}}">{{this.nombre}}</option>
                                     {{/each}}
@@ -81,7 +87,9 @@
         </div>
     </main>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-2.0.8/datatables.min.js"></script>
+<script src="/js/compra.js"></script>
 <script>
   let productos = [];
 
@@ -98,12 +106,19 @@
             </select>
         </td>
         <td><input type="number" name="cantidad[]" class="form-control cantidad" min="1" required></td>
-        <td><input type="number" name="precio_unitario[]" class="form-control precio" step="0.01" required></td>
+        <td><input type="number" name="precio_unitario[]" class="form-control precio" step="0.01" min="0.01" required></td>
         <td><input type="number" step="0.01" name="subtotal[]" class="form-control subtotal" readonly></td>
         <td><button type="button" class="btn btn-danger btn-sm eliminar">X</button></td>
     `;
 
     tbody.appendChild(row);
+
+    $(row).find('select[name="producto[]"]').select2({
+        theme: "bootstrap-5",
+        width: '100%',
+        placeholder: "Seleccionar producto",
+        allowClear: true
+    });   
 
     row.querySelector(".cantidad").addEventListener("input", actualizarTotales);
     row.querySelector(".precio").addEventListener("input", actualizarTotales);

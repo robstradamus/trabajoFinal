@@ -7,7 +7,7 @@ function configurarLectora() {
         if (valor.length >= 3) { //Codigo de barras debe tenrer al menos 3 caracteres
             console.log('Código escaneado:', valor);
             //Mover automáticamente al siguiente campo después de escanear
-            setTimeout(() => { document.getElementById('nombre').focus();}, 100);
+            //setTimeout(() => { document.getElementById('nombre').focus();}, 100);
         }
     });
     inputCodBarra.addEventListener('keydown', function(e) {
