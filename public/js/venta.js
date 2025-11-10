@@ -80,6 +80,7 @@ $(document).ready(function() {
         function agregarProductoAVenta(producto) {
             const filas = document.querySelectorAll("#tbodyProductos tr");
             let productoExiste = false;
+            let error = false;
             filas.forEach(fila => {
                 const idInput = fila.querySelector('.producto-id');
                 if (idInput && idInput.value == producto.id_producto) {
@@ -88,13 +89,15 @@ $(document).ready(function() {
                     const stock = parseFloat(idInput.getAttribute('data-stock'));
                     if (nuevaCantidad > stock) {
                         alert(`No hay suficiente stock. Stock disponible: ${stock}`);
+                        error = true;
                         return;
+                    } else {
+                        cantidadInput.value = nuevaCantidad;
+                        productoExiste = true;
                     }
-                    cantidadInput.value = nuevaCantidad;
-                    productoExiste = true;
                 }
             });    
-            if (!productoExiste) {
+            if (!productoExiste && error !== true) {
                 agregarFilaProducto(producto);
             }
             actualizarTotales();
