@@ -10,7 +10,7 @@ router.get('/proveedor/registrar', proveedorController.mostrarRegistrar);
 router.post('/proveedor/registrar', [
     body('nombre', 'El nombre es invalido').trim().notEmpty().isLength({min:2, max:50}).escape(),
     body('tipoRubro', 'Debes seleccionar un tipo de rubro').trim().notEmpty().isIn(['Carniceria', 'Almacen']).escape(),
-    body('numTel', 'El telefono es invalido').trim().isLength({min:8, max:14}).escape(),
+    body('numTel', 'El telefono es obligatorio').trim().escape().isLength({min:8, max:10}).withMessage('El telefono debe tener 8 a 10 caracteres'),
     body('tipoProducto', 'El tipo de producto es invalido').trim().notEmpty().isLength({min:2, max:50}).escape(),
     body('observaciones', 'Observaciones no validas').trim().isLength({max:100}).escape()
 ], proveedorController.registrarPost);
@@ -24,7 +24,7 @@ router.get('/proveedor/modificar/:id_proveedor', proveedorController.mostrarModi
 router.post('/proveedor/modificar/:id_proveedor', [
     body('nombre', 'El nombre es invalido').trim().notEmpty().isLength({min:2, max:50}).escape(),
     body('tipoRubro', 'Debes seleccionar un tipo de rubro').trim().notEmpty().escape(),
-    body('numTel', 'El telefono es invalido').trim().isLength({min:8, max:14}).escape(),
+    body('numTel', 'El telefono es obligatorio').trim().escape().isLength({min:8, max:10}).withMessage('El telefono debe tener 8 a 10 caracteres'),
     body('tipoProducto', 'El tipo de producto es invalido').trim().notEmpty().isLength({min:2, max:50}).escape(),
     body('observaciones', 'Observaciones no validas').trim().isLength({max:100}).escape()
 ], proveedorController.modificar);

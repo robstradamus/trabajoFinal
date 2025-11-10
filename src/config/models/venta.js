@@ -14,7 +14,7 @@ const atributos = {
         onDelete: 'SET NULL'
     },
     fecha: {
-        type: Sequelize.DATE 
+        type: Sequelize.DATEONLY
     },
     total: {
         type: Sequelize.FLOAT

@@ -23,7 +23,7 @@ router.get('/compra/detalle/:id_compra', compraController.mostrarDetalle);
 router.get('/compra/pagos/:id_compra', compraController.mostrarPagos);
 router.get('/compra/pagos/registrar/:id_compra', compraController.registrarPago);
 router.post('/compra/pagos/registrar/:id_compra', [
-    body('monto', 'Debe incluir un monto.').notEmpty().isFloat().escape(),
+    body('monto', 'Debe incluir un monto.').notEmpty().isFloat({min:0.1}).withMessage('El monto debe ser positivo.').escape(),
     body('fecha', 'La fecha es obligatoria.').notEmpty().isDate(),
     body('metodo_pago', 'El metodo de pago es obligatorio.').trim().notEmpty().isLength({min:1, max:50}).escape(),
     body('observaciones', 'La observacion no puede superar los 100 caracteres.').isLength({max: 100}).escape()

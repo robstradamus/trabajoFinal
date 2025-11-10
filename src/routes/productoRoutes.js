@@ -13,8 +13,8 @@ router.post('/producto/registrar',
         body('tipoProducto', 'Debe seleccionar el tipo de producto').notEmpty(),
         body('codBarra', 'El codigo de  barra es obligatorio').notEmpty(),
         body('idProveedor', 'Debe seleccionar un proveedor').notEmpty(),
-        body('precioUnitario', 'El precio unitario es obligatorio').notEmpty(),
-        body('stock', 'El stock es obligatorio').notEmpty(),
+        body('precioUnitario', 'El precio unitario es obligatorio').notEmpty().isFloat({min: 0.1}).withMessage('El precio unitario debe ser positivo.').escape(),
+        body('stock', 'El stock es obligatorio').notEmpty().isInt({min: 1}).withMessage('El stock debe ser positivo.').escape(),
         body('descripcion', 'La descripcion no es valida').trim().isLength({max:100}).escape()
     ]
 ,productoController.producto_post);
@@ -29,8 +29,8 @@ router.post('/producto/modificar/:id_producto',
         body('tipoProducto', 'Debe seleccionar el tipo de producto').notEmpty(),
         body('codBarra', 'El codigo de  barra es obligatorio').notEmpty(),
         body('idProveedor', 'Debe seleccionar un proveedor').notEmpty(),
-        body('precioUnitario', 'El precio unitario es obligatorio').notEmpty(),
-        body('stock', 'El stock es obligatorio').notEmpty(),
+        body('precioUnitario', 'El precio unitario es obligatorio').notEmpty().isFloat({min: 0.1}).withMessage('El precio unitario debe ser positivo.').escape(),
+        body('stock', 'El stock es obligatorio').notEmpty().isInt({min: 1}).withMessage('El stock debe ser positivo.').escape(),
         body('descripcion', 'La descripcion no es valida').trim().isLength({max:100}).escape()
     ]
 ,productoController.modificar_post);

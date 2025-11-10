@@ -119,7 +119,7 @@ module.exports.registrarVentaPost = async (request, response) => {
         });
     } else {
         insertarVenta = await mVenta.create({
-            'fecha': fecfechaDeVenta,
+            'fecha': fechaDeVenta,
             'total': total,
             'saldo_pendiente': saldo_pendiente
         });
