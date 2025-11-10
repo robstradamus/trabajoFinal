@@ -2,43 +2,35 @@ const Sequelize = require('sequelize');
 const db = require('../database');
 
 const atributos = {
-    id_producto: {
+    id_proveedor: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    id_proveedor: {
-        type: Sequelize.INTEGER,
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-    },
     nombre: {
         type: Sequelize.STRING(50)
     },
-    tipoProducto: {
+    tipo_rubro: {
         type: Sequelize.STRING(50)
     },
-    cod_barra: {
-        type: Sequelize.STRING(50),
-        unique: true
+    num_tel: {
+        type: Sequelize.STRING(50)
     },
-    precio_unitario: {
-        type: Sequelize.FLOAT
+    tipo_producto: {
+        type: Sequelize.STRING(50)
     },
-    stock: {
-        type: Sequelize.INTEGER
-    },
-    observacion: {
+    observaciones: {
         type: Sequelize.STRING(100)
     }
 };
 
+
 const opciones = {
-    tableName: 'productos',
+    tableName: 'proveedors',
     timestamps: false
 };
 
-const producto = db.con_sequelize.define('producto', atributos, opciones);
+const proveedor = db.con_sequelize.define('proveedor', atributos, opciones);
 
-module.exports = producto;
+module.exports = proveedor;
