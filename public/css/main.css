@@ -1,0 +1,74 @@
+.sidebar {
+    background-color: #2c3e50;
+    min-height: calc(100vh - 120px);
+    padding-top: 20px;
+}
+
+.sidebar .nav-link {
+    color: #adb5bd;
+    padding: 12px 20px;
+    margin: 2px 0;
+    border-radius: 0;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #34495e;
+    color: white;
+    border-left-color: #3498db;
+}
+
+.sidebar .nav-link.active {
+    background-color: #3498db;
+    color: white;
+    border-left-color: #2980b9;
+}
+.main-content {
+    padding: 20px 0;
+    min-height: calc(100vh - 120px);
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.table-responsive {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.table th {
+    background-color: #f8f9fa;
+    border-top: none;
+    font-weight: 600;
+    padding: 1rem 0.75rem;
+}
+
+.table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+.badge {
+    font-size: 0.75em;
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}

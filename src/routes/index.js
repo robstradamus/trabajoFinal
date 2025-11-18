@@ -4,7 +4,7 @@ const {dashboard} = require('../controllers/dashboardController');
 
 //Rutas principales
 router.get('/', (request, response) => {
-    return response.render('home');
+    return response.render('home', { showSidebar: false });
 });
 
 router.get('/dashboard', dashboard);
