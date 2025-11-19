@@ -78,6 +78,8 @@ const dashboard = async (request, response) => {
             }
         };
         return response.render('dashboard', {
+            showSidebar: true,
+            title: 'Dashboard',
             totalDia: totalxDia || 0,
             totalesPorSector: totalesPorSector,
             ultimasVentas: ultimasxVentas,

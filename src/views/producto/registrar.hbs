@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Proveedor</label>
-                                    <select class="form-select" name="idProveedor" required>
+                                    <select class="form-select" name="idProveedor" id="idProveedor" required>
                                         <option value="">Seleccione un proveedor</option>
                                         {{#each paramProveedores}}  
                                         <option value="{{this.id_proveedor}}">{{this.nombre}}</option>
@@ -62,11 +62,11 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Precio Unitario</label>
+                                    <label class="form-label">Precio Unitario - Kg</label>
                                     <input type="number" step="0.01" class="form-control" id="precioUnitario" name="precioUnitario" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Stock Inicial</label>
+                                    <label class="form-label">Stock Inicial </label>
                                     <input type="number" class="form-control" id="stock" name="stock" value="0" required>
                                 </div>
                             </div>
@@ -89,4 +89,7 @@
         </div>
     </main>
 </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-2.0.8/datatables.min.js"></script>
+<script src="/js/producto.js"></script>
 <script src="/js/codBarra.js"></script>

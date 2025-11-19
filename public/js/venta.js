@@ -1,4 +1,9 @@
 $(document).ready(function() {
+    $('#id_cliente').select2({
+        theme: 'bootstrap-5',   // usa el estilo de Bootstrap 4 (funciona bien con Bootstrap 5 también)
+        placeholder: 'Buscar cliente...',
+        allowClear: true
+    });
     const lenguageEs = { 
         "processing": "Procesando...",
         "lengthMenu": "Mostrar _MENU_ registros",
@@ -35,9 +40,13 @@ $(document).ready(function() {
     }
 
     //LISTADO VENTAS: Se ejecuta si existe la tabla
+    let tablaListado;
     if ($('#tablaVentas').length > 0) {
-        let tablaListado = $('#tablaVentas').DataTable({
-            "language": lenguageEs
+        tablaListado = $('#tablaVentas').DataTable({
+            "language": lenguageEs,
+            "columnDefs": [
+                { "type": "date", "targets": 1 } 
+            ]
         });
     }
 
@@ -80,6 +89,7 @@ $(document).ready(function() {
         function agregarProductoAVenta(producto) {
             const filas = document.querySelectorAll("#tbodyProductos tr");
             let productoExiste = false;
+            let error = false;
             filas.forEach(fila => {
                 const idInput = fila.querySelector('.producto-id');
                 if (idInput && idInput.value == producto.id_producto) {
@@ -88,13 +98,15 @@ $(document).ready(function() {
                     const stock = parseFloat(idInput.getAttribute('data-stock'));
                     if (nuevaCantidad > stock) {
                         alert(`No hay suficiente stock. Stock disponible: ${stock}`);
+                        error = true;
                         return;
+                    } else {
+                        cantidadInput.value = nuevaCantidad;
+                        productoExiste = true;
                     }
-                    cantidadInput.value = nuevaCantidad;
-                    productoExiste = true;
                 }
             });    
-            if (!productoExiste) {
+            if (!productoExiste && error !== true) {
                 agregarFilaProducto(producto);
             }
             actualizarTotales();
@@ -198,4 +210,40 @@ $(document).ready(function() {
         configurarScanner();
         console.log('Escáner de ventas listo');
     }
+
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            const min = $('#minDate').val();
+            const max = $('#maxDate').val();
+            const date = data[1]; 
+
+            const partes = date.split('/');
+            const cellDate = new Date(`${partes[2]}-${partes[1]}-${partes[0]}`); // YYYY-MM-DD
+
+            if (isNaN(cellDate)) {
+            console.warn('Fecha no válida en fila:', date);
+            return true;
+            }
+
+            // Convertimos las fechas del filtro también
+            const minDate = min ? new Date(min) : null;
+            const maxDate = max ? new Date(max) : null;
+
+            // Lógica del filtro
+            if ((minDate && cellDate < minDate) || (maxDate && cellDate > maxDate)) {
+            return false;
+            }
+            return true;
+        }
+    );
+
+    $('#minDate, #maxDate').on('change', function () {
+        tablaListado.draw(); 
+    });
+
+    $('#clearDateFilter').on('click', function () {
+        $('#minDate').val('');
+        $('#maxDate').val('');
+        tablaListado.draw();
+    });
 });
