@@ -51,7 +51,6 @@ module.exports.producto_post = async (request, response) => {
 
     try{
         const { nombre, precioUnitario, stock, descripcion, codBarra, tipoProducto, idProveedor } = request.body;
-        //valida si el codigo de barras exister
         let producto_existe = await mProducto.findOne({
             where: { 'cod_barra': codBarra },
             raw: true
@@ -61,7 +60,6 @@ module.exports.producto_post = async (request, response) => {
             request.flash('varMensaje', [{msg: 'El Código de Barras ya está registrado'}]);
             return response.redirect('/producto/registrar');
         }
-        // si no existe lo crea
         let insertar = await mProducto.create({
             'nombre': nombre,
             'id_proveedor': idProveedor,
