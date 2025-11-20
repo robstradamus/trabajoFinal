@@ -9,4 +9,9 @@ router.get('/', (request, response) => {
 
 router.get('/dashboard', dashboard);
 
+router.get('/reportes', (request, response)=> {
+    return response.render('enDesarrollo');
+});
+
+
 module.exports = router;
