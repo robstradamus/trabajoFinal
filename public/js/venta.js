@@ -1,4 +1,3 @@
-const modalProducto = new bootstrap.Modal(document.getElementById("modalProducto"));
 
 $(document).ready(function() {
     $('#id_cliente').select2({
@@ -249,7 +248,9 @@ $(document).ready(function() {
         tablaListado.draw();
     });
 
+    let modalProducto;
     document.getElementById("agregarProducto").addEventListener("click", () => {
+        modalProducto = new bootstrap.Modal(document.getElementById("modalProducto"));
         $('#idProveedor').select2({
             theme: 'bootstrap-5',   
             placeholder: 'Buscar Proveedor...',

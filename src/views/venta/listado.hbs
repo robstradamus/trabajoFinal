@@ -68,10 +68,14 @@
                                 <td>#{{this.id_venta}}</td>
                                 <td>{{formatDate this.fecha}}</td>
                                 <td>
-                                    {{#if this.nombre_cliente}}
-                                    <span class="badge bg-primary">{{this.nombre_cliente}} - DNI {{this.dni_cliente}}</span>
+                                    {{#if (eq this.nombre_cliente 'Consumidor Final')}}
+                                        <span class="badge bg-primary">{{this.nombre_cliente}}</span>
                                     {{else}}
-                                    <span class="badge bg-primary">Consumidor final</span>
+                                        {{#if this.nombre_cliente}}
+                                        <span class="badge bg-primary">{{this.nombre_cliente}} - DNI {{this.dni_cliente}}</span>
+                                        {{else}}
+                                        <span class="badge bg-primary">Consumidor Final </span>
+                                        {{/if}}
                                     {{/if}}
                                 </td>
                                 <td>${{this.total}}</td>

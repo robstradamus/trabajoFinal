@@ -38,6 +38,8 @@
                         <tbody>
                             <!--- VARIABLE DESDE EL CONTORLADOR, MODIFICAR O MANTENER-->
                             {{#each paramCliente}}
+                            {{#if (eq this.nombre "Consumidor Final")}}
+                            {{else}}
                             <tr>
                                 <td>{{this.id_cliente}}</td>
                                 <td>{{this.nombre}}</td>
@@ -47,10 +49,11 @@
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="/cliente/modificar/{{this.id_cliente}}" class="btn btn-warning"> Modificar </a>
-                                        <a href="/cliente/eliminar/{{this.id_cliente}}" class="btn btn-danger"> Eliminar </a>
+                                        <a href="/cliente/eliminar/{{this.id_cliente}}" class="btn btn-danger" onclick="return confirmarEliminar('{{this.nombre}}')"> Eliminar </a>
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
                             {{/each}}
                         </tbody>
                     </table>

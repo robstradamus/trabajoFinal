@@ -48,7 +48,7 @@
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="/proveedor/modificar/{{this.id_proveedor}}" class="btn btn-warning">Modificar</a>
-                                        <a href="/proveedor/eliminar/{{this.id_proveedor}}" class="btn btn-danger">Eliminar</a>
+                                        <a href="/proveedor/eliminar/{{this.id_proveedor}}" class="btn btn-danger" onclick="return confirmarEliminar('{{this.nombre}}')">Eliminar</a>
                                     </div>
                                 </td>
                             </tr>
