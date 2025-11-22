@@ -111,6 +111,7 @@ module.exports.registrarVentaPost = async (request, response) => {
     }
     const fechaDeVenta = new Date();
     const [anio, mes, dia] = fecha.split('-').map(Number); fechaDeVenta.setFullYear(anio, mes - 1, dia);
+
     let insertarVenta;
     if (id_cliente) {
         insertarVenta = await mVenta.create({
