@@ -1,10 +1,84 @@
 <div class="row">
     {{> navigation}}
+
+    <!-- AGREGAR PRODUCTO -->
+    <div class="modal fade" id="modalProducto" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Agregar Producto Manualmente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nombre del Producto</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tipo de Producto</label>
+                            <select class="form-select" name="tipoProducto" required>
+                                <option value="">Seleccione un tipo</option>
+                                <option value="Almacen">Almacén</option>
+                                <option value="Carniceria">Carnicería</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Código de Barras</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="codBarra" name="codBarra" value="{{producto.cod_barra}}" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="focusScanner()"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Proveedor</label>
+                            <select class="form-select" name="idProveedor" id="idProveedor" required>
+                                <option value="">Seleccione un proveedor</option>
+                                {{#each paramProveedores}}  
+                                <option value="{{this.id_proveedor}}">{{this.nombre}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Precio Unitario - Kg</label>
+                            <input type="number" step="0.01" class="form-control" id="precioUnitario" name="precioUnitario" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Stock Inicial </label>
+                            <input type="number" class="form-control" id="stock" name="stock" value="0" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Observaciones</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" maxlength="100"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" id="btnAgregarDesdeModal">
+                    Agregar a la Venta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Registrar Venta</h1>
-            <a href="/venta/listado" class="btn btn-outline-secondary btn-sm">Volver a Ventas </a>
+            <div>
+                <a href="/cuentas-corrientes/listado" class="btn btn-warning btn-sm me-2">Cuentas Corrientes</a>
+                <a href="/venta/listado" class="btn btn-success btn-sm">Listado de Ventas </a>
+            </div>
         </div>
         {{#if varMensaje}}
         <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
@@ -36,7 +110,9 @@
                         <div class="col-md-6">
                             <label class="form-label">Tipo de Pago</label>
                             <select class="form-select" name="tipo_pago" required>
-                                <option value="CONTADO">Pago Contado</option>
+                                <option value="EFECTIVO">Efectivo</option>
+                                <option value="TRANSFERENCIA">Transferencia</option>
+                                <option value="TARJETA">Tarjeta Debito/Credito</option>
                                 <option value="CORRIENTE">Cuenta Corriente</option> 
                             </select>
                         </div>
@@ -87,7 +163,9 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="button" id="agregarProducto" class="btn btn-outline-primary me-md-2"> Agregar Producto Manualmente </button>
+                        <button type="button" id="agregarProducto" class="btn btn-outline-primary me-md-2">
+                            Agregar Producto Manualmente
+                        </button>
                         <a href="/venta/listado" class="btn btn-outline-secondary me-md-2">Cancelar</a>
                         <button class="btn btn-primary" type="submit">Registrar Venta</button>
                     </div>

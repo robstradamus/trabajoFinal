@@ -1,6 +1,8 @@
+let modalProducto;
+
 $(document).ready(function() {
     $('#id_cliente').select2({
-        theme: 'bootstrap-5',   // usa el estilo de Bootstrap 4 (funciona bien con Bootstrap 5 también)
+        theme: 'bootstrap-5',   
         placeholder: 'Buscar cliente...',
         allowClear: true
     });
@@ -204,9 +206,9 @@ $(document).ready(function() {
             }
             return true;
         });
-        document.getElementById("agregarProducto").addEventListener("click", function() {
-            agregarFilaProducto();
-        });
+        //document.getElementById("agregarProducto").addEventListener("click", function() {
+            //agregarFilaProducto();
+        //});
         configurarScanner();
         console.log('Escáner de ventas listo');
     }
@@ -245,5 +247,58 @@ $(document).ready(function() {
         $('#minDate').val('');
         $('#maxDate').val('');
         tablaListado.draw();
+    });
+
+    document.getElementById("agregarProducto").addEventListener("click", () => {
+        modalProducto = new bootstrap.Modal(document.getElementById("modalProducto"));
+        $('#idProveedor').select2({
+            theme: 'bootstrap-5',   
+            placeholder: 'Buscar Proveedor...',
+            allowClear: true,
+            dropdownParent: $('#modalProducto') 
+        });
+        modalProducto.show();
+    });
+
+    document.getElementById("btnAgregarDesdeModal").addEventListener("click", async () => {
+        const nombre = document.getElementById("nombre").value;
+        const tipoProducto = document.querySelector("select[name='tipoProducto']").value;
+        const codBarra = document.getElementById("codBarra").value;
+        const idProveedor = document.getElementById("idProveedor").value;
+        const precioUnitario = parseFloat(document.getElementById("precioUnitario").value);
+        const stock = parseFloat(document.getElementById("stock").value);
+        const descripcion = document.getElementById("descripcion").value;
+
+
+        const res = await fetch("/crear_producto", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nombre,
+                tipoProducto,
+                codBarra,
+                idProveedor,
+                precioUnitario,
+                stock,
+                descripcion
+            })
+        });
+
+        const data = await res.json();
+
+        if (!data.ok) {
+            alert(data.msg);
+            return;
+        }
+
+        const producto = {
+        id_producto: data.producto.id_producto,
+        nombre: data.producto.nombre,
+        stock: data.producto.stock,
+        precio_unitario: data.producto.precio_unitario
+        };
+
+        agregarFilaProducto(producto);
+        modalProducto.hide();
     });
 });

@@ -30,4 +30,16 @@ router.post('/venta/pago/registrar/:id_venta', [
     body('metodo_pago', 'El metodo de pago es obligatorio.').trim().notEmpty().isLength({min:1, max:50}).escape(),
     body('observaciones', 'La observacion no puede superar los 100 caracteres.').isLength({max: 100}).escape()
 ], ventaController.registrarPagoPost);
+
+router.post('/crear_producto',
+    [
+        body('nombre', 'El nombre es obligatorio').trim().notEmpty().escape(),
+        body('tipoProducto', 'Debe seleccionar el tipo de producto').notEmpty(),
+        body('codBarra', 'El codigo de  barra es obligatorio').notEmpty(),
+        body('idProveedor', 'Debe seleccionar un proveedor').notEmpty(),
+        body('precioUnitario', 'El precio unitario es obligatorio').notEmpty().isFloat({min: 0.1}).withMessage('El precio unitario debe ser positivo.').escape(),
+        body('stock', 'El stock es obligatorio').notEmpty().isInt({min: 1}).withMessage('El stock debe ser positivo.').escape(),
+        body('descripcion', 'La descripcion no es valida').trim().isLength({max:100}).escape()
+    ]
+, ventaController.crearProducto);
 module.exports = router;

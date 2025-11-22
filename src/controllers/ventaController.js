@@ -1,6 +1,7 @@
 const mProducto = require('../config/models/producto');
 const mDetalleVenta = require('../config/models/detalleVenta');
 const mVenta = require('../config/models/venta');
+const mProveedor = require('../config/models/proveedor');
 const mCliente = require('../config/models/cliente');
 const mPagoCliente = require('../config/models/pagoCliente');
 const { validationResult } = require('express-validator');
@@ -28,8 +29,9 @@ module.exports.registrarVenta = async (request, response) => {
     const hoyString = new Date().toLocaleString('sv-SE', { timeZone: 'America/Argentina/Buenos_Aires' });
     const fechaFormateada = hoyString.split(' ')[0];
     let listadoClientes = await mCliente.findAll({ raw: true });
+    let listadoProveedores = await mProveedor.findAll({raw: true});;
     //console.log('listadoClientes');
-    return response.render('venta/registrar', {paramCliente: listadoClientes, fechaActual: fechaFormateada});
+    return response.render('venta/registrar', {paramCliente: listadoClientes, fechaActual: fechaFormateada, paramProveedores: listadoProveedores});
 };
 module.exports.registrarVentaPost2 = async (request, response) => {
     const errores = validationResult(request);
@@ -109,6 +111,7 @@ module.exports.registrarVentaPost = async (request, response) => {
     }
     const fechaDeVenta = new Date();
     const [anio, mes, dia] = fecha.split('-').map(Number); fechaDeVenta.setFullYear(anio, mes - 1, dia);
+
     let insertarVenta;
     if (id_cliente) {
         insertarVenta = await mVenta.create({
@@ -326,5 +329,44 @@ module.exports.registrarPagoPost = async (request, response) => {
         request.flash('varEstiloMensaje', 'danger');
         request.flash('varMensaje', [{msg: 'No se pudo realizar el registro del Pago.'}]);
         return response.redirect('/venta/pago/registrar/' + id_venta);
+    }
+}
+
+module.exports.crearProducto = async (request, response) => {
+    let mensaje = '';
+    const errores = validationResult(request);
+    if (!errores.isEmpty()) {
+        console.error("Error:", errores.array());
+        mensaje = errores.array().map(e => e.msg).join('\n');
+        return response.json({ ok: false, msg: mensaje});
+    }
+
+    try{
+        const { nombre, precioUnitario, stock, descripcion, codBarra, tipoProducto, idProveedor } = request.body;
+
+        let producto_existe = await mProducto.findOne({
+            where: { 'cod_barra': codBarra },
+            raw: true
+        });
+        if (producto_existe) {
+            return response.json({ ok: false, msg: "El código de barras ya existe" });
+        }
+
+        let insertar = await mProducto.create({
+            'nombre': nombre,
+            'id_proveedor': idProveedor,
+            'tipoProducto': tipoProducto,
+            'cod_barra': codBarra,
+            'precio_unitario': precioUnitario,
+            'stock': stock,
+            'observacion': descripcion
+        });
+        return response.json({
+            ok: true,
+            producto: insertar 
+        });
+    }catch (error) {
+        console.error("Error:", error);
+        return response.json({ ok: false, msg: "Error al registrar el producto." });
     }
 }
