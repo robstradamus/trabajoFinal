@@ -1,6 +1,6 @@
 const mGasto = require('../config/models/gasto');
 const { validationResult } = require('express-validator');
-const { Op } = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 
 module.exports.mostrarFormularioRegistro = (request, response) => {
     const fechaActualObjeto = new Date();
@@ -41,40 +41,36 @@ module.exports.listado = async (request, response) => {
         return response.redirect('/dashboard');
     }
 };
-
 module.exports.registro = async (request, response) => {
     const errores = validationResult(request);
-        if (!errores.isEmpty()) {
-            request.flash('varEstiloMensaje', 'danger');
-            request.flash('varMensaje', errores.array());
-
-            return response.redirect('/gasto/registrar');
-        }
-    try{
-        const {fecha, tipoGasto, descripcion, monto} = request.body;
-        let insertar = await mGasto.create(
-            {
-                'fecha':fecha,
-                'tipoGasto':tipoGasto,
-                'descripcion':descripcion,
-                'monto':monto
-            }
-        )
-        if(insertar){
-            request.flash('varEstiloMensaje', 'success');
-            request.flash('varMensaje', [{msg: 'Gasto registrado con exito'}]);
-            return response.redirect('/gasto/listado');
-        }
-        else{
-            request.flash('varEstiloMensaje', 'danger');
-            request.flash('varMensaje', [{msg: 'Error al registrar el gasto'}]);
-            return response.redirect('/gasto/registrar');
-        }
-    }catch(error) {
+    if (!errores.isEmpty()) {
+        request.flash('varEstiloMensaje', 'danger');
+        request.flash('varMensaje', errores.array());
+        return response.redirect('/gasto/registrar');
+    }
+    
+    try {
+        const { fecha, tipoGasto, descripcion, monto } = request.body;
+        
+        // ✅ SOLUCIÓN DEFINITIVA: INSERT DIRECTAMENTE CON CURDATE()
+        await mGasto.sequelize.query(`
+            INSERT INTO gastos (descripcion, monto, fecha, tipoGasto) 
+            VALUES (?, ?, CURDATE(), ?)
+        `, {
+            replacements: [descripcion, monto, tipoGasto],
+            type: Sequelize.QueryTypes.INSERT
+        });
+        
+        console.log('✅ Gasto insertado con CURDATE()');
+        
+        request.flash('varEstiloMensaje', 'success');
+        request.flash('varMensaje', [{msg: 'Gasto registrado con éxito'}]);
+        return response.redirect('/gasto/listado');
+        
+    } catch(error) {
         console.error("Error al registrar el gasto:", error);
         request.flash('varEstiloMensaje', 'danger');
-        request.flash('varMensaje', [{msg: 'Ocurrió un error interno al guardar el gasto'}]);
-        
+        req.flash('varMensaje', [{msg: 'Ocurrió un error interno al guardar el gasto'}]);
         return response.redirect('/gasto/registrar');
     }
 };

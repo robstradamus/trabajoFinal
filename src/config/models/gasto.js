@@ -15,7 +15,7 @@ const atributos = {
         type: Sequelize.FLOAT
     },
     fecha: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     },
     tipoGasto: {
         type: Sequelize.STRING(50)

@@ -19,6 +19,7 @@ const ventaRoutes = require('./routes/ventaRoutes');
 const clienteRoutes = require('./routes/clienteRoutes');
 const cuentaCorrienteRoutes = require('./routes/cuentaCorrienteRoutes');
 const gastoRoutes = require('./routes/gastoRoutes');
+const reporteRoutes = require('./routes/reporteRoutes');
 
 //Configuracion de sesiones
 app.use(session({
@@ -86,6 +87,6 @@ app.use('/', ventaRoutes);
 app.use('/', clienteRoutes);
 app.use('/', cuentaCorrienteRoutes);
 app.use('/', gastoRoutes);
-
+app.use('/', reporteRoutes);
 
 module.exports = app;
