@@ -18,11 +18,11 @@
 npm run inicio
 
 ```
-* Instalar Libreria de PDF Puppeteer * 
+* Instalar Libreria de PDF Puppeteer 
 ```bash
-npm install puppeteer
+    > npm install puppeteer
 ```
-o
+Ó
 ```bash
-npm i puppeteer
+    > npm i puppeteer
 ```
