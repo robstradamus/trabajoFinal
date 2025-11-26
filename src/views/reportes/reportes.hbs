@@ -1,0 +1,93 @@
+<div class="row">
+    {{> navigation}}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Reporte Diario</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="col-12 text-center">
+                    <form action="/reportes/generar-pdf" method="POST" class="d-inline">
+                        <input type="hidden" name="fecha" value="{{fecha}}">
+                        <button type="submit" class="btn btn-sm btn-success">Generar PDF</button>  
+                    </form>                                      
+                    <a href="/venta/registrar" class="btn btn-sm btn-primary me-2">Nueva Venta</a>
+                    <a href="/reportes/historial" class="btn btn-outline-secondary">Ver Historial</a>
+                </div>
+            </div>
+        </div>
+        {{#if messages}}
+        {{#each messages}}
+        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+            {{this.msg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {{/each}}
+        {{/if}}
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h4 class="text-muted">Fecha: {{fecha}}</h4>
+            </div>
+        </div>
+        <!-- VENTAS-->
+        <div class="row mb-4">
+            <div class="col-md-8 mb-3">
+                <div class="card border-success">
+                    <div class="card-header bg-success text-white"><strong>VENTAS POR SECTOR</strong></div>
+                    <div class="card-body">
+                        {{#if ventasPorSector.length}}
+                        {{#each ventasPorSector}}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold">{{this.nombre}}:</span>
+                            <span class="text-success">$ {{this.total}}</span>
+                        </div>
+                        {{/each}}
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">TOTAL VENTAS:</span>
+                            <span class="text-success fs-5">$ {{totalVentas}}</span>
+                        </div>
+                        {{else}}
+                        <div class="text-center text-muted py-3">
+                            <br>
+                            No hay ventas registradas hoy
+                        </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <!-- GASTOS -->
+            <div class="col-md-4 mb-3">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white"><strong>GASTOS</strong>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3 class="text-danger">$ {{totalGastos}}</h3>
+                        <small class="text-muted">Total egresos del día</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BALANCE -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white"><strong>BALANCE DEL DÍA</strong></div>
+                    <div class="card-body text-center">
+                        <h2 class="{{#if (gt balance 0)}}text-success{{else}}text-danger{{/if}}">$ {{balance}}</h2>
+                    </div>
+                </div>
+            </div>
+        <!-- SALDO PENDIENTES -->
+            <div class="col-md-6 mb-3">
+                <div class="card border-warning">
+                    <div class="card-header bg-warning text-white"><strong>SALDOS PENDIENTES</strong></div>
+                    <div class="card-body text-center">
+                        <h3 class="text-warning">$ {{deudasClientes}}</h3>
+                        <small class="text-muted">Total en Cuentas por Cobrar</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

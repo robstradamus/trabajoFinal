@@ -111,6 +111,7 @@ module.exports.registrarVentaPost = async (request, response) => {
     }
     const fechaDeVenta = new Date();
     const [anio, mes, dia] = fecha.split('-').map(Number); fechaDeVenta.setFullYear(anio, mes - 1, dia);
+
     let insertarVenta;
     if (id_cliente) {
         insertarVenta = await mVenta.create({
@@ -159,7 +160,7 @@ module.exports.registrarVentaPost = async (request, response) => {
         }
         request.flash('varEstiloMensaje', 'success');
         request.flash('varMensaje', [{msg: "Venta registrada con éxito." }]);
-        return response.redirect('/venta/listado');
+        return response.redirect('/venta/registrar');
     } else {
         request.flash('varEstiloMensaje', 'danger');
         request.flash('varMensaje', [{msg: 'Error en el registro.'}])
@@ -252,10 +253,10 @@ module.exports.listadoPagos = async (request, response) => {
         delete pagos['Venta.Cliente.dni'];
         return pagos;
     });
-
-
     //console.log(listadoPagosLimpia);
-    return response.render('venta/pagos', {paramListadoPagosVentas: listadoPagosLimpia, id_venta: id_venta, saldo_pendiente: listadoVenta.saldo_pendiente});
+    return response.render('venta/pagos', {paramListadoPagosVentas: listadoPagosLimpia, 
+        id_venta: id_venta, 
+        saldo_pendiente: listadoVenta.saldo_pendiente});
 }
 
 module.exports.registrarPago = async (request, response) => {

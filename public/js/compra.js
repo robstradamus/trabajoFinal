@@ -1,70 +1,18 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $('#proveedor').select2({
-        theme: 'bootstrap-5',   // usa el estilo de Bootstrap 4 (funciona bien con Bootstrap 5 también)
+        theme: 'bootstrap-5',
         placeholder: 'Buscar Proveedor...',
         allowClear: true
     });
-    function inicializarSelect2() {
-        $('select[name=".select-producto"]').select2({
-            theme: "bootstrap-5",
-            width: '100%',
-            placeholder: "Seleccionar producto",
-            allowClear: true
-        });
-    }
 
-    function actualizarSelectsProductos3(producto) {
-        console.log("Actualizando selects con:", producto);
-        document.querySelectorAll(".select-producto").forEach(select => {
+    // llenar select con listaProductos
+    window.llenarSelectProductos = function (select) {
+        select.innerHTML = "";
 
-            // Opción ya existe
-            if ([...select.options].some(o => o.value == producto.id_producto)) {
-                console.log("La opción ya existía");
-                return;
-            }
-
-            // Crear nueva opción
-            const opt = new Option(
-                producto.nombre,
-                producto.id_producto,
-                false,
-                false
-            );
-
+        listaProductos.forEach(p => {
+            const opt = new Option(p.nombre, p.id_producto);
             select.add(opt);
-
-            // REFRESCAR Select2
-            if ($(select).data('select2')) {
-                $(select).select2('destroy');        // 🔥 destruir
-                $(select).select2({                  // 🔥 recrear
-                    theme: 'bootstrap-5',
-                    width: '100%',
-                    placeholder: 'Seleccionar producto',
-                    allowClear: true
-                });
-            }
         });
-    }
-
-    function actualizarSelectsProductos(producto) {
-    console.log("Actualizando selects con:", producto);
-
-    document.querySelectorAll(".select-producto").forEach(select => {
-
-        // si ya estaba, skip
-        if ([...select.options].some(o => o.value == producto.id_producto)) {
-            console.log("Existe, skip");
-            return;
-        }
-
-        // agregar opción
-        const opt = new Option(producto.nombre, producto.id_producto, false, false);
-        select.add(opt);
-
-        // reconstruir select2 (porque deja de ver las opciones nuevas)
-        if ($(select).data('select2')) {
-            $(select).select2('destroy');
-        }
 
         $(select).select2({
             theme: "bootstrap-5",
@@ -72,80 +20,93 @@ $(document).ready(function() {
             placeholder: "Seleccionar producto",
             allowClear: true
         });
-    });
-}
+    };
 
+    // Agregar fila de producto
+    $("#agregarProducto").click(function () {
+        const tbody = document.querySelector("#tablaProductos tbody");
+        const row = document.createElement("tr");
 
+        row.innerHTML = `
+            <td><select class="form-select w-200 select-producto" name="producto[]"></select></td>
+            <td><input type="number" name="cantidad[]" class="form-control cantidad" min="1" required></td>
+            <td><input type="number" name="precio_unitario[]" class="form-control precio" step="0.01" min="0.01" required></td>
+            <td><input type="number" name="subtotal[]" class="form-control subtotal" readonly></td>
+            <td><button type="button" class="btn btn-danger btn-sm eliminar">X</button></td>
+        `;
 
-    function actualizarSelectsProductos2(producto) {
-    // Recorrer todos los selects que listan productos
-        document.querySelectorAll(".select-producto").forEach(select => {
-            // verificar si ya existe
-            let existe = Array.from(select.options).some(o => o.value == producto.id_producto);
-            if (existe) return;
+        tbody.appendChild(row);
 
-            // Crear nueva opción
-            const option = new Option(
-                producto.nombre,
-                producto.id_producto,
-                false,
-                false
-            );
+        const select = row.querySelector(".select-producto");
+        llenarSelectProductos(select);
 
-            // Agregar la opción al select
-            select.add(option);
+        row.querySelector(".cantidad").addEventListener("input", actualizarTotales);
+        row.querySelector(".precio").addEventListener("input", actualizarTotales);
 
-            // Refrescar select2 si está activo
-            if ($(select).data('select2')) {
-                $(select).trigger('change.select2');
-            }
+        row.querySelector(".eliminar").addEventListener("click", () => {
+            row.remove();
+            actualizarTotales();
         });
+    });
+
+    // actualizar total
+    function actualizarTotales() {
+        let total = 0;
+
+        document.querySelectorAll("#tablaProductos tbody tr").forEach(row => {
+            const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
+            const precio = parseFloat(row.querySelector(".precio").value) || 0;
+            const subtotal = cantidad * precio;
+
+            row.querySelector(".subtotal").value = subtotal.toFixed(2);
+            total += subtotal;
+        });
+
+        document.getElementById("total").value = total.toFixed(2);
     }
 
+    // agregar producto nuevo
     let modalProducto;
-    document.getElementById("agregarProductoManual").addEventListener("click", () => {
-        modalProducto = new bootstrap.Modal(document.getElementById("modalProducto"));
-        $('#idProveedor').select2({
-            theme: 'bootstrap-5',   
+
+    $("#agregarProductoManual").click(function () {
+        modalProducto = new bootstrap.Modal("#modalProducto");
+        $("#idProveedor").select2({
+            theme: 'bootstrap-5',
             placeholder: 'Buscar Proveedor...',
             allowClear: true,
-            dropdownParent: $('#modalProducto') 
+            dropdownParent: $("#modalProducto")
         });
         modalProducto.show();
     });
 
-    document.getElementById("btnAgregarDesdeModal").addEventListener("click", async () => {
-        const nombre = document.getElementById("nombre").value;
-        const tipoProducto = document.querySelector("select[name='tipoProducto']").value;
-        const codBarra = document.getElementById("codBarra").value;
-        const idProveedor = document.getElementById("idProveedor").value;
-        const precioUnitario = parseFloat(document.getElementById("precioUnitario").value);
-        const stock = parseFloat(document.getElementById("stock").value);
-        const descripcion = document.getElementById("descripcion").value;
-
+    // registrar nuevo producto desde el modal
+    $("#btnAgregarDesdeModal").click(async function () {
 
         const res = await fetch("/crear_producto", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                nombre,
-                tipoProducto,
-                codBarra,
-                idProveedor,
-                precioUnitario,
-                stock,
-                descripcion
+                nombre: $("#nombre").val(),
+                tipoProducto: $("select[name='tipoProducto']").val(),
+                codBarra: $("#codBarra").val(),
+                idProveedor: $("#idProveedor").val(),
+                precioUnitario: parseFloat($("#precioUnitario").val()),
+                stock: parseFloat($("#stock").val()),
+                descripcion: $("#descripcion").val()
             })
         });
 
         const data = await res.json();
-        console.log(data);
 
-        if (!data.ok) {
-            alert(data.msg);
-            return;
-        }
-        actualizarSelectsProductos(data.producto);
+        if (!data.ok) return alert(data.msg);
+
+        listaProductos.push(data.producto);
+
+        document.querySelectorAll(".select-producto").forEach(sel => {
+            llenarSelectProductos(sel);
+        });
+
         modalProducto.hide();
     });
+
 });

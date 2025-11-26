@@ -269,3 +269,15 @@ module.exports.registrarPagoPost = async (request, response) => {
         return response.redirect('/compra/pagos/registrar/' + id_compra);
     }
 }
+
+module.exports.listadoProductos = async (request, response) => {
+    try {
+        const productos = await mProducto.findAll({
+            attributes: ['id_producto', 'nombre']
+        });
+
+        response.json({ ok: true, productos });
+    } catch (error) {
+        response.json({ ok: false, msg: "Error obteniendo productos" });
+    }
+}

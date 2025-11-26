@@ -96,7 +96,11 @@
                         <tbody>
                             {{#each paramDetallesVenta}}
                             <tr>
-                                <td>{{this.producto_nombre}}</td>
+                                {{#if this.producto_nombre}}
+                                <td><span class="badge bg-primary">{{this.producto_nombre}}</span></td>
+                                {{else}}
+                                <td><span class="badge bg-primary">Producto General</span></td>
+                                {{/if}}
                                 <td>{{this.cantidad}}</td>
                                 <td>${{this.precio_unitario}}</td>
                                 <td>${{this.subtotal}}</td>

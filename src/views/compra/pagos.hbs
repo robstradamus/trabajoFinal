@@ -9,16 +9,6 @@
             </a>
         </div>
 
-        {{#if varMensaje}}
-        <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
-            <ul class="mb-0 list-unstyled">
-                {{#each varMensaje}}
-                <li>{{this.msg}}</li>
-                {{/each}}
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        {{/if}}
 
         <div class="card shadow-sm">
             <div class="card-header bg-dark text-white">
@@ -41,7 +31,7 @@
                         <tbody>
                             {{#each paramListadoPagosProveedores}}
                             <tr>
-                                {{#if (this.nombre_proveedor)}}
+                                {{#if this.nombre_proveedor}}
                                 <td><span class="badge bg-primary">{{this.nombre_proveedor}} | {{this.fecha_compra}}</span></td>
                                 {{else}}
                                 <td><span class="badge bg-primary">Proveedor General</span></td>
@@ -56,7 +46,7 @@
                     </table>
                     {{#if montoPendiente    }}
                     <div class="d-grid gap-2 mt-3">
-                        <a href="/compra/pagos/registrar/{{this.idCompra}}" class="btn btn-primary">Registrar Pago</a>
+                        <a href="/compra/pagos/registrar/{{idCompra}}" class="btn btn-primary">Registrar Pago</a>
                     </div>
                     {{/if}}
                 </div>

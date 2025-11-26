@@ -40,7 +40,11 @@
                         <tbody>
                             {{#each paramListadoDetalleCompra}}
                             <tr>
+                                {{#if this.nombre_producto}}
                                 <td><span class="badge bg-primary">{{this.nombre_producto}}</span></td>
+                                {{else}}
+                                <td><span class="badge bg-primary">Producto General</span></td>
+                                {{/if}}
                                 <td>{{this.cantidad}} unidades</td>
                                 <td>${{this.precio_unitario}}</td>
                                 <td>${{this.subTotal}}</td>

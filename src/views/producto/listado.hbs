@@ -57,7 +57,11 @@
                                         {{this.stock}}
                                     </span>
                                 </td>
+                                {{#if this.rel_proveedor_producto.nombre}}
                                 <td>{{this.rel_proveedor_producto.nombre}}</td>
+                                {{else}}
+                                <td>Proveedor General</td>
+                                {{/if}}
                                 <td>{{this.observacion}}</td>
                                 <td>
                                     <div class="btn-group btn-group-sm">

@@ -92,19 +92,15 @@ module.exports.eliminar = async (request, response) => {
     try {
         const { id_producto } = request.params;
 
-        let buscarProductoVenta = await mDetalleVenta.findOne({
-            where: {'id_producto': id_producto},
+        let buscarProducto = await mProducto.findOne({
+            where: {'id_producto': id_producto
+            },
             raw: true
         });
 
-        let buscarProductoCompra = await mDetalleCompra.findOne({
-            where: {'id_producto': id_producto},
-            raw: true
-        });
-
-        if (buscarProductoVenta || buscarProductoCompra) {
+        if (buscarProducto.stock > 0) {
             request.flash('varEstiloMensaje', 'danger');
-            request.flash('varMensaje', [{ msg: 'El producto se encuentra registrado en una venta.' }]);
+            request.flash('varMensaje', [{ msg: 'El producto no se puede eliminar. Hay stock disponible.' }]);
             return response.redirect('/producto/listado');
         }
 
