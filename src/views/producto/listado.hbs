@@ -57,12 +57,16 @@
                                         {{this.stock}}
                                     </span>
                                 </td>
+                                {{#if this.rel_proveedor_producto.nombre}}
                                 <td>{{this.rel_proveedor_producto.nombre}}</td>
+                                {{else}}
+                                <td>Proveedor General</td>
+                                {{/if}}
                                 <td>{{this.observacion}}</td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="/producto/modificar/{{this.id_producto}}" class="btn btn-warning" title="Editar">Modificar</a>
-                                        <a href="/producto/eliminar/{{this.id_producto}}" class="btn btn-danger" title="Eliminar">Eliminar</a>
+                                        <a href="/producto/eliminar/{{this.id_producto}}" class="btn btn-danger btn-sm" onclick="return confirmarEliminar('{{this.nombre}}');"> Eliminar</a>
                                     </div>
                                 </td>
                             </tr>

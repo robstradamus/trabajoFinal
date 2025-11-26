@@ -1,4 +1,8 @@
 let tabla;
+window.confirmarEliminar = function(nombre) {
+    return confirm(`¿Eliminar "${nombre}"?`);
+}
+
 $(document).ready(function() {
     tabla = $('#tablaCliente').DataTable({
         "language": {

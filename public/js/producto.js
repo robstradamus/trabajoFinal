@@ -1,4 +1,8 @@
 let tabla;
+window.confirmarEliminar = function(nombre) {
+    return confirm(`¿Eliminar "${nombre}"?`);
+}
+
 $(document).ready(function() {
     $('#idProveedor').select2({
         theme: 'bootstrap-5',   // usa el estilo de Bootstrap 4 (funciona bien con Bootstrap 5 también)

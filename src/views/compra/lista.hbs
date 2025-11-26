@@ -63,7 +63,7 @@
                             {{#each paramListadoCompras}}
                             <tr>
                                 <td>{{this.id_compra}}</td>
-                                <td>{{this.nombre_proveedor}}</td>
+                                <td>{{#if this.nombre_proveedor}}{{this.nombre_proveedor}}{{else}}Proveedor General{{/if}}</td>
                                 <td>{{this.fecha}}</td>
                                 <td>${{this.total}}</td>
                                 <td><span class="badge bg-{{#if (eq this.saldo_pendiente 0)}}success{{else}}danger{{/if}}">${{this.saldo_pendiente}}</span></td>

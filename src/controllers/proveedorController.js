@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const mProveedor = require('../config/models/proveedor');
+const mCompra = require('../config/models/compra');
 const {Op} = require('sequelize');
 
 module.exports.mostrarRegistrar = (request, response) => {
@@ -72,6 +73,20 @@ module.exports.mostrarListado = async (request, response) => {
 module.exports.eliminar = async (request, response) => {
     try {
         const {id_proveedor} = request.params;
+
+        const saldoFaltante = await mCompra.findOne({
+            where: {
+                'id_proveedor': id_proveedor,
+                'saldo_pendiente': {[Op.gt]: 0}
+            }
+        });
+
+        if (saldoFaltante) {
+            request.flash('varEstiloMensaje', 'danger');
+            request.flash('varMensaje', [{msg: 'No se pudo eliminar Proveedor. Hay deudas registras hacia el proveedor.'}]);
+            return response.redirect('/proveedor/listado');
+        }
+
         let eliminar = await mProveedor.destroy({
             where: {'id_proveedor': id_proveedor}
         });

@@ -28,4 +28,8 @@ router.post('/compra/pagos/registrar/:id_compra', [
     body('metodo_pago', 'El metodo de pago es obligatorio.').trim().notEmpty().isLength({min:1, max:50}).escape(),
     body('observaciones', 'La observacion no puede superar los 100 caracteres.').isLength({max: 100}).escape()
 ], compraController.registrarPagoPost);
+
+router.get('/buscar/productos', compraController.listadoProductos);
+
+
 module.exports = router;

@@ -19,6 +19,7 @@ const ventaRoutes = require('./routes/ventaRoutes');
 const clienteRoutes = require('./routes/clienteRoutes');
 const cuentaCorrienteRoutes = require('./routes/cuentaCorrienteRoutes');
 const gastoRoutes = require('./routes/gastoRoutes');
+const reporteRoutes = require('./routes/reporteRoutes');
 
 //Configuracion de sesiones
 app.use(session({
@@ -66,7 +67,8 @@ app.engine('hbs', engine({
         formatDate: function (date) {
             if (!date) return '';
             return new Date(date).toLocaleDateString('es-AR', {day: '2-digit', month: '2-digit', year: 'numeric'});
-        }
+        },
+        json: context => JSON.stringify(context)
     }
 }));
 app.set('view engine', 'hbs');
@@ -86,6 +88,6 @@ app.use('/', ventaRoutes);
 app.use('/', clienteRoutes);
 app.use('/', cuentaCorrienteRoutes);
 app.use('/', gastoRoutes);
-
+app.use('/', reporteRoutes);
 
 module.exports = app;

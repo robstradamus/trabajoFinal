@@ -1,0 +1,68 @@
+<div class="row">
+    {{> navigation}}
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div>
+                <h1 class="h2">Historial de Reportes</h1>
+                {{#if hayReportes}}
+                <small class="text-muted">{{reportes.length}} reportes generados</small>
+                {{/if}}
+            </div>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="/reportes/diario" class="btn btn-sm btn-primary">Volver al Reportes</a>
+            </div>
+        </div>
+        {{#if messages}}
+            {{#each messages}}
+                <div class="alert alert-{{varEstiloMensaje}} alert-dismissible fade show" role="alert">
+                    {{this.msg}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {{/each}}
+        {{/if}}
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tablaHistorialReportes" class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Reporte</th>
+                                <th class="text-end"> Ventas</th>
+                                <th class="text-end">Gastos</th>
+                                <th class="text-end"> Balance</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#if hayReportes}}
+                                {{#each reportes}}
+                                <tr>
+                                    <td class="fw-bold">{{this.fecha_reporte}}</td>
+                                    <td>
+                                        <small>{{this.nombre_archivo}}</small>
+                                    </td>
+                                    <td class="text-end text-success fw-bold">$ {{this.total_ventas}}</td>
+                                    <td class="text-end text-danger">$ {{this.total_gastos}}</td>
+                                    <td class="text-end fw-bold {{#if (gt this.balance 0)}}text-success{{else}}text-danger{{/if}}">$ {{this.balance}}</td>
+                                    <td class="text-center">
+                                        <a href="/reportes/descargar/{{this.id_reporte}}" class="btn btn-sm btn-success" title="Descargar PDF">Descargar</a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            {{else}}
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-5">
+                                        <h5>No hay reportes en el historial</h5>
+                                        <a href="/reportes/diario" class="btn btn-primary">Generar Reporte</a>
+                                    </td>
+                                </tr>
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

@@ -44,9 +44,9 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
-                                <thead>
+                                <thead class="table-dark">
                                     <tr>
-                                        <th>Venta #</th>
+                                        <th>Venta</th>
                                         <th>Fecha</th>
                                         <th>Cliente</th>
                                         <th class="text-end">Total</th>
@@ -57,8 +57,13 @@
                                     {{#each ultimasVentas}}
                                     <tr>
                                         <td>#{{this.id_venta}}</td>
-                                        <td>{{formatDate this.fecha}}</td>
-                                        <td>{{this.Cliente.nombre}}</td>
+                                        <td>{{this.fecha}}</td>
+                                        <td>
+                                            {{#if this.Cliente.nombre}}
+                                            {{else}}
+                                            <span class="badge bg-primary">Consumidor Final</span>
+                                            {{/if}}
+                                        </td>
                                         <td class="text-end">{{formatMoney this.total}}</td>
                                         <td class="text-center">
                                             {{#if this.saldo_pendiente}}
