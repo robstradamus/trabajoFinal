@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const mCliente = require('../config/models/cliente');
+const mVenta = require('../config/models/venta');
 const { Op } = require('sequelize');
 
 module.exports.listado = async (request, response) => {
@@ -68,6 +69,22 @@ module.exports.eliminar = async (request, response) => {
 
     try{
         const {id_cliente} = request.params;
+
+        const saldoPendientes = await mVenta.findOne({
+            where: {
+                'id_cliente': id_cliente,
+                'saldo_pendiente': {[Op.gt]: 0}
+            },
+            raw: true
+        });
+
+        if (saldoPendientes) {
+            request.flash('varEstiloMensaje', 'danger');
+            request.flash('varMensaje', [{ msg: 'No se pudo eliminar el cliente. El cliente adeuda en su cuenta corriente.' }]);
+            return response.redirect('/cliente/listado');
+        }
+
+
         let eliminar = await mCliente.destroy({
             where: { 'id_cliente': id_cliente },
             raw: true

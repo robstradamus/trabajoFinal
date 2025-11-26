@@ -26,6 +26,14 @@ $(document).ready(function() {
             "sortDescending": ": Activar para ordenar la columna de manera descendente"
         }        
     };
+
+    let tablaDetalleVenta;
+    if ($('#tablaDetalleVenta').length > 0) {
+        let tablaDetalleVenta = $('#tablaDetalleVenta').DataTable({
+            "language": lenguageEs
+        });
+    }
+
     //CUENTAS CORRIENTES: Se ejecuta si existe la tabla
     if ($('#tablaCuentaCorriente').length > 0) {
         let tablaCuentaCorriente = $('#tablaCuentaCorriente').DataTable({

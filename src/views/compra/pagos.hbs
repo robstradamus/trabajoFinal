@@ -41,7 +41,11 @@
                         <tbody>
                             {{#each paramListadoPagosProveedores}}
                             <tr>
+                                {{#if (this.nombre_proveedor)}}
                                 <td><span class="badge bg-primary">{{this.nombre_proveedor}} | {{this.fecha_compra}}</span></td>
+                                {{else}}
+                                <td><span class="badge bg-primary">Proveedor General</span></td>
+                                {{/if}}
                                 <td>${{this.monto}}</td>
                                 <td>{{this.fecha}}</td>
                                 <td>{{this.metodo_pago}}</td>
