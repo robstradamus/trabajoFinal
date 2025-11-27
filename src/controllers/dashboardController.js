@@ -71,6 +71,9 @@ const dashboard = async (request, response) => {
         
         const totalesPorSector = { almacen: 0, carniceria: 0 };
         for (const item of totalxSector) {
+            if (item.sector === null) {
+                continue;
+            }
             if (item.sector.toLowerCase() === 'almacen') {
                 totalesPorSector.almacen = item.totalPorSector;
             } else if (item.sector.toLowerCase() === 'carniceria') {

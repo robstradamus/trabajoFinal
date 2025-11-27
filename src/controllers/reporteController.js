@@ -328,7 +328,7 @@ module.exports = {
             response.setHeader('Content-Type', 'application/pdf');
             response.setHeader('Content-Disposition', `attachment; filename="${reporte.nombre_archivo}"`);
             const fileStream = fs.createReadStream(reporte.ruta_archivo);
-            fileStream.pipe(res);
+            fileStream.pipe(response);
         } catch (error) {
             console.error('Error al descargar reporte:', error);
             req.flash('varEstiloMensaje', 'danger');

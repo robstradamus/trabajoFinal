@@ -1,10 +1,6 @@
 let tabla;
-window.confirmarEliminar = function(nombre) {
-    return confirm(`¿Eliminar "${nombre}"?`);
-}
-
 $(document).ready(function() {
-    tabla = $('#tablaProveedores').DataTable({
+    tabla = $('#tablaGastos').DataTable({
         "language": {
             "lengthMenu": "Mostrar _MENU_ registros por página",
             "zeroRecords": "No se encontraron resultados",

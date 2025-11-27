@@ -1,6 +1,8 @@
 const { validationResult } = require('express-validator');
 const mProducto = require('../config/models/producto');
 const mProveedor = require('../config/models/proveedor');
+const mDetalleVenta = require('../config/models/detalleVenta');
+const mDetalleCompra = require('../config/models/detalleCompra');
 const { Op } = require('sequelize');
 
 module.exports.producto = async (request, response) => {
@@ -89,6 +91,19 @@ module.exports.producto_post = async (request, response) => {
 module.exports.eliminar = async (request, response) => {
     try {
         const { id_producto } = request.params;
+
+        let buscarProducto = await mProducto.findOne({
+            where: {'id_producto': id_producto
+            },
+            raw: true
+        });
+
+        if (buscarProducto.stock > 0) {
+            request.flash('varEstiloMensaje', 'danger');
+            request.flash('varMensaje', [{ msg: 'El producto no se puede eliminar. Hay stock disponible.' }]);
+            return response.redirect('/producto/listado');
+        }
+
         let eliminar = await mProducto.destroy({
             where: { 'id_producto': id_producto }
         });

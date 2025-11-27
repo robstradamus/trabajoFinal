@@ -4,6 +4,7 @@ const mCompra = require('../config/models/compra');
 const mDetalleCompra = require('../config/models/detalleCompra');
 const mPagoProveedor = require('../config/models/pagoProveedor');
 const mProducto = require('../config/models/producto');
+const { listado } = require('./productoController');
 
 module.exports.mostrarRegistrar = async (request, response) => {
     try{
@@ -182,6 +183,8 @@ module.exports.mostrarPagos = async (request, response) => {
 module.exports.registrarPago = async (request, response) => {
     try{
         const { id_compra } = request.params;
+
+
         let datosCompra = await mCompra.findOne({
             where: { 'id_compra': id_compra },
             include: [
@@ -199,7 +202,7 @@ module.exports.registrarPago = async (request, response) => {
         datosCompra.nombre_proveedor = datosCompra['Proveedor.nombre'];
         delete datosCompra['Proveedor.nombre'];
 
-        return response.render('compra/registrarPago', { paramDatosCompra: datosCompra });
+        return response.render('compra/registrarPago', { paramDatosCompra: datosCompra});
     
     }catch (error) {
         console.error("Error al mostrar formulario de registrar pago", error);
@@ -264,5 +267,17 @@ module.exports.registrarPagoPost = async (request, response) => {
         request.flash('varEstiloMensaje', 'danger');
         request.flash('varMensaje', [{ msg: 'Error al registrar el pago' }]);
         return response.redirect('/compra/pagos/registrar/' + id_compra);
+    }
+}
+
+module.exports.listadoProductos = async (request, response) => {
+    try {
+        const productos = await mProducto.findAll({
+            attributes: ['id_producto', 'nombre']
+        });
+
+        response.json({ ok: true, productos });
+    } catch (error) {
+        response.json({ ok: false, msg: "Error obteniendo productos" });
     }
 }

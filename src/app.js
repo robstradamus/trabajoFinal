@@ -67,7 +67,8 @@ app.engine('hbs', engine({
         formatDate: function (date) {
             if (!date) return '';
             return new Date(date).toLocaleDateString('es-AR', {day: '2-digit', month: '2-digit', year: 'numeric'});
-        }
+        },
+        json: context => JSON.stringify(context)
     }
 }));
 app.set('view engine', 'hbs');
