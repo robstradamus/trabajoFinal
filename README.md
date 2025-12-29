@@ -26,21 +26,20 @@ Sistema web completo para la gestión de un mini mercado, desarrollado como Proy
 ```
 ---
 ## Tecnologias usadas
-# Backend
+### Backend
 * Node.js + Express.js
 * MySQL con Sequelize
 # Frontend
 * Handlebars (Motor de plantillas HTML)
 * Bootstrap 5
-# Reportes 
+### Reportes 
 * Puppeteer (PDF)
-## Herramientas
+### Herramientas
 * npm (gestor de paquetes)
 * Git (control de versiones)
 ---
 ## Iniciar Proyecto
-
-# Instalacion de Dependencias
+### Instalacion de Dependencias
 
 ```bash
 npm install
@@ -51,7 +50,7 @@ npm install
 npm install puppeteer
 ```
 
-# Iniciar Servidor 
+### Iniciar Servidor 
 ```bash
 npm run inicio
 ```
