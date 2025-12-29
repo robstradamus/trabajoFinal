@@ -29,7 +29,7 @@ Sistema web completo para la gestión de un mini mercado, desarrollado como Proy
 ### Backend
 * Node.js + Express.js
 * MySQL con Sequelize
-# Frontend
+### Frontend
 * Handlebars (Motor de plantillas HTML)
 * Bootstrap 5
 ### Reportes 
@@ -76,9 +76,9 @@ npm run inicio
 ---
 ## Equipo de Desarrollo
 ### Desarrolladores
-**Robinson** - [@robstradamus](https://github.com/robstradamus)
-**Valentin** - [@VNGNDev](https://github.com/VNGNDev)
-**Tiago** - [@T14G0-C4R4C0L](https://github.com/T14G0-C4R4C0L)
+- **Robinson** - [@robstradamus](https://github.com/robstradamus)
+- **Valentin** - [@VNGNDev](https://github.com/VNGNDev)
+- **Tiago** - [@T14G0-C4R4C0L](https://github.com/T14G0-C4R4C0L)
 ---
 ### Contribuciones
 Trabajo colaborativo en todas las capas del Sistema:
