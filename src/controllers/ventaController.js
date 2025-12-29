@@ -171,7 +171,7 @@ module.exports.registrarVentaPost = async (request, response) => {
 module.exports.mostrarListado = async (request, response) => {
     let listadoVenta = await mVenta.findAll({
         include: [
-            { model: mCliente, as: 'Cliente', attributes: ['nombre', 'dni'] }
+            { model: mCliente, as: 'Cliente', attributes: ['nombre', 'dni']}
         ],
         raw: true
     });
